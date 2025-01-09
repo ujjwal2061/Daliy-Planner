@@ -1,28 +1,40 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { createContext  } from "react";
+import { createContext, useContext  } from "react";
+import {getAuth, signInWithEmailAndPassword} from "firebase/auth"
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import {getFirestore} from "firebase/firestore"
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCbbONxZqKhdqs-lHirZjjGfKrTWIFQ2Ok",
-  authDomain: "chat-app-04.firebaseapp.com",
-  projectId: "chat-app-04",
-  storageBucket: "chat-app-04.firebasestorage.app",
-  messagingSenderId: "764854985544",
-  appId: "1:764854985544:web:0d1170f6b42e7915d7497d",
-  measurementId: "G-JML9PNW4B9"
+  apiKey:import.meta.env.VITE_APPkey,
+  authDomain:import.meta.env.VITE_AUTHID,
+  projectId:import.meta.env.VITE_ProjectID,
+  storageBucket:import.meta.env.VITE_STORAGE,
+  messagingSenderId:import.meta.env.VITE_MESSAGESENDERID,
+  appId: import.meta.env.VITE_APPID,
+  measurementId: import.meta.env.VITE_MEASUREMENT
 };
 
 // Initialize Firebase
- export const app = initializeApp(firebaseConfig);
- const TodoContext=createContext()
+ const app = initializeApp(firebaseConfig);
+ const auth=getAuth(app)
+ const db=getFirestore(app)
 
-//  export const useTodo=()=>useContext(TodoContext)
+  const FirebaseContext=createContext();
+  
+  export const useFirebase=()=>useContext(FirebaseContext);
 
- export const TODOProvider=({children})=>{
+ export const FirebaseProvider=({children})=>{
+  const singiup=(email,password)=>{
+    return createUserWithEmailAndPassword( auth ,email,password) 
+  }
+  const login=(email ,password)=>{
+    return signInWithEmailAndPassword(auth ,email,password )
+  }
     return(
 
-        <TodoContext.Provider value={{}}>
+        <FirebaseContext.Provider value={{singiup ,login ,auth  ,db}}>
             {children}
-        </TodoContext.Provider>
+        </FirebaseContext.Provider>
     )
  }
