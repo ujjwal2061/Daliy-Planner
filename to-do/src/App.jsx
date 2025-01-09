@@ -1,10 +1,7 @@
-import Add from "./pages/Add";
-
+import  AppRoute from './Route/AppRoute'
  const App=()=>{
   return(
-   <>
-      <Add />
-   </>
-  )
- }
- export default App;
+  <AppRoute />
+  )}
+  export default App;
+    
