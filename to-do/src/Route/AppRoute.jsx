@@ -7,6 +7,8 @@ import {
  
   import Sigup from "./Sigup";
   import Login from "./Login"
+  import PrivateLayout from "../PrivateLayout/PrivateLayout";
+
 const router=createBrowserRouter([
  {
     path:"/",
@@ -19,8 +21,13 @@ const router=createBrowserRouter([
  {path:"/login",
     element:<Login />
  },
- {path:"/content",
-    element:  <Content />
+ { 
+   path:"/content",
+    element: (
+      <PrivateLayout>
+         <Content />
+      </PrivateLayout>
+      ) 
  }
   ]);
 

@@ -1,10 +1,20 @@
 // import Sigup from "../Route/Sigup"
 
+import Content from "./Content";
+
+
+
+
 const Home=()=>{
+   
+    // Function add the To-Do
+    
     return(
-        <section className="container">
-     
-            {/* <Sigup /> */}
+        <section>
+          <Content />
+   
+          
+      
         </section>
     )
 }

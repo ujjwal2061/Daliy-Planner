@@ -1,4 +1,4 @@
-// Import the functions you need from the SDKs you need
+
 import { initializeApp } from "firebase/app";
 import { createContext, useContext  } from "react";
 import {getAuth, signInWithEmailAndPassword} from "firebase/auth"
@@ -12,7 +12,8 @@ const firebaseConfig = {
   storageBucket:import.meta.env.VITE_STORAGE,
   messagingSenderId:import.meta.env.VITE_MESSAGESENDERID,
   appId: import.meta.env.VITE_APPID,
-  measurementId: import.meta.env.VITE_MEASUREMENT
+  measurementId: import.meta.env.VITE_MEASUREMENT,
+ 
 };
 
 // Initialize Firebase
@@ -33,7 +34,7 @@ const firebaseConfig = {
   }
     return(
 
-        <FirebaseContext.Provider value={{singiup ,login ,auth  ,db}}>
+        <FirebaseContext.Provider value={{singiup ,login ,auth,db}}>
             {children}
         </FirebaseContext.Provider>
     )
