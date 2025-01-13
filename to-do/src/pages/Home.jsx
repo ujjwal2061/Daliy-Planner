@@ -12,9 +12,6 @@ const Home=()=>{
     return(
         <section>
           <Content />
-   
-          
-      
         </section>
     )
 }
