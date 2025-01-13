@@ -3,7 +3,7 @@ import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc } from "firebase
 
 
 
-// Async Thunks for Firebase Operations
+// Async Thunks for Firebase Operations /Fecthing the Data From the Firebase 
 export const fetchTodos = createAsyncThunk("todo/fetchTodosFirebase", async (db) => {
     try{
         const todoCollection = collection(db, "list");
