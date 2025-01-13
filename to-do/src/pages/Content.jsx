@@ -6,12 +6,12 @@ import { useFirebase } from "../firebase/Firebase";
 
 const Content=()=>{
         const { db } = useFirebase();
+        const [editID,setEditId]=useState(false)
         const [task ,setTasks]=useState(
                 {
                 text:"",
                 description:"" 
         })
-      const [editID,setEditId]=useState(false)
 
       const handleChange=(e)=>{
        const {name ,value}=e.target;
@@ -52,15 +52,33 @@ const Content=()=>{
         setTasks({text:todo.text,description:todo.description})
         setEditId(todo.id)
    }
-   
 
     return (
 
- <section>
-         <div>
-        <label><input type="text"   name="text" value={task.text} placeholder="Enter your Tasks.." onChange={handleChange} />Task   </label>   
-        <label><input type="text" name="description" value={task.description} onChange={handleChange} placeholder="Leavesome descrpiton here" />Decrpiton</label> 
-        </div>  
+ <section className="min-h-screen bg-background ">
+        <div className="p-2 flex flex-col justify-center items-center">
+  <div className="flex flex-row items-center justify-center p-2">
+    <h1 className="font-atma font-semibold text-text bg-background text-3xl px-4 rounded-md">
+      DAILY PLANNER
+    </h1>
+  </div>
+  <div className="p-3 rounded-md flex flex-col justify-center items-center gap-2  w-[600px]">
+    <div className="relative w-full">
+        {task.text ==="" && (
+                <label htmlFor="text" className=" absolute top-2 left-4 text-gray-400">Goals</label>      
+        )}
+        <input  type="text"  name="text"   value={task.text}   onChange={handleChange}  placeholder=" "  className="px-3 py-2 w-full rounded-md  focus:outline-none focus:border-blue-500"/>
+    </div>   
+    <div className="relative w-full">
+        {task.description ==="" && (
+          <label  htmlFor="description" className="absolute left-4 top-2 text-gray-400">  Description </label>
+
+        )}
+      <textarea  type="text" rows={5}   name="description" value={task.description}  onChange={handleChange} placeholder=" " className=" px-3 py-2 w-full   bg-goalsBoxBackground rounded-md border-2 border-gray-300 focus:outline-none focus:border-blue-500" />
+    </div>
+  </div>
+</div>
+
         <button onClick={()=>hanldeadd(task.text ,task.description)}>{editID ?"Update":"Add"}</button>
         {/*Showing the List */ }
     <div>
