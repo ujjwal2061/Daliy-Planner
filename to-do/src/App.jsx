@@ -1,9 +1,11 @@
-import  AppRoute from './Route/AppRoute'
+// import Home from './pages/Home';
+ import AppRoute from './Route/AppRoute';
 import { FirebaseProvider } from './firebase/Firebase';
  const App=()=>{
   return(
     <FirebaseProvider>
-        <AppRoute />
+      <AppRoute />
+    {/* <Home /> */}
     </FirebaseProvider>
   )}
   export default App;

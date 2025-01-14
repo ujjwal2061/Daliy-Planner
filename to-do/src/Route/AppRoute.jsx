@@ -5,7 +5,7 @@ import {
   import Home from "../pages/Home"
   import Content from '../pages/Content'
  
-  import Sigup from "./Sigup";
+  import Signup from "./Signup";
   import Login from "./Login"
   import PrivateLayout from "../PrivateLayout/PrivateLayout";
 
@@ -15,8 +15,8 @@ const router=createBrowserRouter([
     element:<Home />
  },
  {
-    path:"/sigup",
-    element:<Sigup />
+    path:"/signup",
+    element:<Signup />
  },
  {path:"/login",
     element:<Login />
