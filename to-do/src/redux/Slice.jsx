@@ -1,5 +1,5 @@
 import { createSlice,  createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc,serverTimestamp  } from "firebase/firestore";
 
 
 
@@ -21,7 +21,11 @@ export const fetchTodos = createAsyncThunk("todo/fetchTodosFirebase", async (db)
 export const addTodoFirebase = createAsyncThunk("todo/addToFirebase", async ({db ,text ,description}) => {
     try{
         const todoCollection = collection(db, "list");
-        const newTodo = { text, description,};
+        const newTodo = { 
+            text, 
+            description,
+           date:serverTimestamp()
+        };
         const docRef = await addDoc(todoCollection, newTodo);
         return { id: docRef.id, ...newTodo };
     }catch(error){
