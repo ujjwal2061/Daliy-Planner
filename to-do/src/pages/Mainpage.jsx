@@ -1,14 +1,14 @@
 import  Screen from '../section/Screen'
 import  Home  from './subpage/Home'
-import  Hero  from './subpage/Hero'
 import  Footer  from './subpage/Footer'
 import  Contact  from "./subpage/Contact"
+import Feature from './subpage/Feature'
 const Manipage=()=>{
   
     return(
       <Screen>
         <Home />
-        <Hero />
+        <Feature />
         <Contact />
         <Footer />
       </Screen>

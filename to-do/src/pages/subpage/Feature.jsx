@@ -1,4 +1,4 @@
-const Hero=()=>{
+const Feature=()=>{
     return(
         <section className="left-2 flex-col justify-center">
           <div>
@@ -8,4 +8,4 @@ const Hero=()=>{
         </section>
     )
 }
-export default Hero;
+export default Feature;
