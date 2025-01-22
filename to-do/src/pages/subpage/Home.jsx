@@ -103,14 +103,24 @@ const Home=()=>{
       </div>
   
       <div className=" ml-5 sm:ml-10 md:ml-16 lg:ml-32 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-[90%] lg:w-[80%] mx-auto md:gap-6 gap-2">
-       <div className="text-center col-span-1 py-4 w-full flex justify-center p-1">
-         <img src="one.jpeg" className="object-cover sm:w-[80%] md:w-full lg:w-full h-auto rounded-xl cursor-pointer shadow-xl  transition-transform duration-500 ease-in-out hover:scale-105" />
+       <div className="text-center col-span-1 py-4 w-full flex  flex-col justify-center  p-1">
+        <div className="aspect-w-4 aspect-h-3 w-[95%] flex px-2  ">
+         <img src="one.jpeg" className="object-cover   sm:w-[80%] md:w-full lg:w-full h-auto rounded-xl cursor-pointer shadow-xl  transition-transform duration-500 ease-in-out hover:scale-105" />
+        </div>
+          <h3 className="font-serif text-left mt-4 ">Set a new Plan every day </h3>
+          <p className="font-mono font-semibold text-left text-sm text-gray-500 ml-2 ">Based on Your Schedule and Goals </p>
        </div>
-       <div className="text-center py-4 col-span-1 flex justify-center items-center w-full p-1">
-         <img src="one.jpeg" className="object-cover sm:w-[80%] md:w-full lg:w-full w-full h-full rounded-xl cursor-pointer shadow-xl transition-transform duration-500 ease-in-out hover:scale-105" />
+       <div className="text-center py-4 col-span-1 flex flex-col  justify-center p-1">
+       <div className="aspect-w-4 aspect-h-3 w-[95%] flex  px-2  ">
+         <img src="work.jpeg" className=" object-cover sm:w-[80%] md:w-full lg:w-full  h-auto rounded-xl cursor-pointer shadow-xl transition-transform duration-500 ease-in-out hover:scale-105" />
+        </div>
+         <h3 className="font-serif text-left mt-2">Set a new Plan every day </h3>
+          <p className="font-mono font-semibold text-left text-sm text-gray-500  ml-2 ">Based on Your Schedule and Goals </p>
        </div>
-       <div className="md:hidden   flex  lg:block  col-span-1 py-4  justify-center items-center w-full">
-         <img src="third.jpeg" className="object-cover sm:w-[80%] md:w-full lg:w-full w-full h-full rounded-xl cursor-pointer shadow-xl transition-transform duration-500 ease-in-out hover:scale-105" />
+       <div className="md:hidden flex-col  flex   lg:block  col-span-1 py-4  justify-center ">
+       <div className="aspect-w-4 aspect-h-3 w-[95%] flex px-2 ">
+         <img src="third.jpeg" className="  object-cover sm:w-[80%] md:w-full lg:w-full  h-auto rounded-xl cursor-pointer shadow-xl transition-transform duration-500 ease-in-out hover:scale-105" />
+          </div>
        </div>
     </div>
         </section>

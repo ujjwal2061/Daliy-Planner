@@ -5,6 +5,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        jetbrains: ['JetBrains Mono', 'monospace'],
         handwriting: ['Caveat', 'sans-serif'],
         atma: ['Atma', 'serif']
     },fontWeight: {

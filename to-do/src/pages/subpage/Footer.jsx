@@ -25,11 +25,11 @@ const Footer=()=>{
             </div>
             <div className=" border-t-2 md:border-t-0  m-2 flex  flex-col  justify-center items-center col-span-12 md:col-span-3">
               <p className="items-center justify-center flex  font-semibold font-serif text-xl  m-2 ">Features</p>
-              <div className={`px-2 flex flex-col justify-center items-center gap-2 font-mono font-semibold w-[80%] rounded-lg  transform perspective-1000 rotate-x-12 ${theme==="dark" ? "hover:text-black":""}`}>
-                <a href="#" className="hover:bg-slate-200 px-2 py-1 w-full flex flex-row  items-center justify-between  rounded-md " >How it Work<span><IoIosArrowForward /></span></a>
-                <a href="#" className="hover:bg-slate-200 px-2 py-1 w-full flex flex-row  items-center justify-between  rounded-md ">For Teams <span><IoIosArrowForward /></span></a>
-                <a href="#" className="hover:bg-slate-200 px-2 py-1 w-full flex flex-row  items-center justify-between  rounded-md ">Pricing<span><IoIosArrowForward /></span></a>
-                <a href="#" className="hover:bg-slate-200 px-2 py-1 w-full flex flex-row  items-center justify-between  rounded-md " >Templates<span><IoIosArrowForward /></span></a>
+              <div className= "px-2 flex flex-col justify-center items-center gap-2 font-mono font-semibold w-[80%] rounded-lg  transform perspective-1000 rotate-x-12 ">
+                <a href="#" className={` ${theme==="dark"? "hover:bg-slate-700" :"hover:bg-slate-200"} px-2 py-1 w-full flex flex-row  items-center justify-between  rounded-md`} >How it Work<span><IoIosArrowForward /></span></a>
+                <a href="#" className={` ${theme==="dark"? "hover:bg-slate-700" :"hover:bg-slate-200"} px-2 py-1 w-full flex flex-row  items-center justify-between  rounded-md `}>For Teams <span><IoIosArrowForward /></span></a>
+                <a href="#" className={` ${theme==="dark"? "hover:bg-slate-700" :"hover:bg-slate-200"} px-2 py-1 w-full flex flex-row  items-center justify-between  rounded-md  `}>Pricing<span><IoIosArrowForward /></span></a>
+                <a href="#" className={`${theme==="dark"? "hover:bg-slate-700" :"hover:bg-slate-200"} px-2 py-1 w-full flex flex-row  items-center justify-between  rounded-md  `} >Templates<span><IoIosArrowForward /></span></a>
             </div>
             </div>
             <div className="bg-yellow-400 flex justify-center items-center col-span-12 md:col-span-3">Third</div>
