@@ -33,8 +33,8 @@ const Login=()=>{
         const [password ,setPassword]=useState("")
     return(
 
-        <section>
-       <form onSubmit={handlelogin} >
+        <section className="h-screen bg-zinc-800">
+       <form onSubmit={handlelogin} className="flex justify-center items-center " >
         <input  type="email" placeholder="enter your email" value={email}  onChange={(e)=>setEmail(e.target.value)} />      
         <input type="password" placeholder="enter your password" value={password}  onChange={(e)=>setPassword(e.target.value)} />
         <button type="submit">Login</button> 
