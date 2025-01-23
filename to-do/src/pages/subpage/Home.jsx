@@ -39,7 +39,7 @@ const Home=()=>{
       },
     ]
     const toogle=()=>{
-      setIsshow(prevState=>!prevState)
+      setIsshow((prevState)=>!prevState)
     }
    const ThemeToggle=()=>{
     setTheme((prevtheme)=>(prevtheme==="light"?"dark":"light"))
@@ -76,9 +76,9 @@ const Home=()=>{
             </div>
             </div>
           {isshow && (
-            <div className={`${theme=="dark" ?"text-black":"text-white"} absolute w-1/2 mt-2 border transition-all duration-300 md:hidden rounded-md  top-full right-0  flex-col ${isshow ?' flex flex-col bg-white':"hidden"}`}>
+            <div className={`${theme=="dark" ?"text-black":"text-white"} absolute w-1/2 mt-2 border  bg-white text-black md:hidden transition-all duration-300  rounded-md  top-11  z-10 right-0  flex-col ${isshow ?' flex flex-col':"hidden"}`}>
                {links.map((items)=>(
-                 <NavLink key={items.id} to={items.link} className="px-5 py-2 font-semibold font-mono hover:bg-gray-100 hover:text-black" >{items.name}</NavLink>
+                 <NavLink key={items.id} to={items.link} className="px-5 py-2 font-semibold font-mono hover:bg-gray-400 hover:text-black" >{items.name}</NavLink>
                 ))}
             </div>
           )}
@@ -103,20 +103,23 @@ const Home=()=>{
       </div>
   
       <div className=" ml-5 sm:ml-10 md:ml-16 lg:ml-32 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-[90%] lg:w-[80%] mx-auto md:gap-6 gap-2">
+        
        <div className="text-center col-span-1 py-4 w-full flex  flex-col justify-center  p-1">
         <div className="aspect-w-4 aspect-h-3 w-[95%] flex px-2  ">
          <img src="one.jpeg" className="object-cover   sm:w-[80%] md:w-full lg:w-full h-auto rounded-xl cursor-pointer shadow-xl  transition-transform duration-500 ease-in-out hover:scale-105" />
         </div>
-          <h3 className="font-serif text-left mt-4 ">Set a new Plan every day </h3>
+          <h3 className="font-semibold font-jetbrains text-left mt-4  ">Set a new Plan every day </h3>
           <p className="font-mono font-semibold text-left text-sm text-gray-500 ml-2 ">Based on Your Schedule and Goals </p>
        </div>
+
        <div className="text-center py-4 col-span-1 flex flex-col  justify-center p-1">
        <div className="aspect-w-4 aspect-h-3 w-[95%] flex  px-2  ">
          <img src="work.jpeg" className=" object-cover sm:w-[80%] md:w-full lg:w-full  h-auto rounded-xl cursor-pointer shadow-xl transition-transform duration-500 ease-in-out hover:scale-105" />
         </div>
-         <h3 className="font-serif text-left mt-2">Set a new Plan every day </h3>
+         <h3 className=" font-semibold text-left mt-2 font-jetbrains">Set a new Plan every day </h3>
           <p className="font-mono font-semibold text-left text-sm text-gray-500  ml-2 ">Based on Your Schedule and Goals </p>
        </div>
+
        <div className="md:hidden flex-col  flex   lg:block  col-span-1 py-4  justify-center ">
        <div className="aspect-w-4 aspect-h-3 w-[95%] flex px-2 ">
          <img src="third.jpeg" className="  object-cover sm:w-[80%] md:w-full lg:w-full  h-auto rounded-xl cursor-pointer shadow-xl transition-transform duration-500 ease-in-out hover:scale-105" />
@@ -128,3 +131,12 @@ const Home=()=>{
 }
 
 export default Home;
+
+
+
+
+
+
+
+
+

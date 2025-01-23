@@ -7,7 +7,7 @@ import {
   import Login from "./Login"
   import PrivateLayout from "../PrivateLayout/PrivateLayout";
   import Mainpage from "../pages/Mainpage";
-
+  import Errorpage from "../pages/error/Errorpage";
 const router=createBrowserRouter([
  {
 path:"/",
@@ -20,6 +20,7 @@ element:<Mainpage />
  {path:"/login",
     element:<Login />
  },
+ {path:"*",element:<Errorpage />},
  { 
    path:"/content",
     element: (
