@@ -76,7 +76,7 @@ const Home=()=>{
             </div>
             </div>
           {isshow && (
-            <div className={`${theme=="dark" ?"text-black":"text-white"} absolute w-1/2 mt-2 border  bg-white text-black md:hidden transition-all duration-300  rounded-md  top-11  z-10 right-0  flex-col ${isshow ?' flex flex-col':"hidden"}`}>
+            <div className={`${theme=="dark" ?"text-black":"text-black"} absolute w-1/2 mt-2 border  bg-white text-black md:hidden transition-all duration-300  rounded-md  top-11  z-10 right-0  flex-col ${isshow ?' flex flex-col':"hidden"}`}>
                {links.map((items)=>(
                  <NavLink key={items.id} to={items.link} className="px-5 py-2 font-semibold font-mono hover:bg-gray-400 hover:text-black" >{items.name}</NavLink>
                 ))}
