@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { createContext, useContext, useState  } from "react";
 import {getAuth, signInWithEmailAndPassword} from "firebase/auth"
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword ,updateProfile } from "firebase/auth";
 import {getFirestore} from "firebase/firestore"
 
 const firebaseConfig = {
@@ -24,16 +24,27 @@ const FirebaseContext=createContext();
   export const useFirebase=()=>useContext(FirebaseContext);
 
  export const FirebaseProvider=({children})=>{
-  const [userName ,setUserName]=useState()
+  const [userName ,setUserName]=useState("")
+
   const singup = async (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password).then(
-      (userCredential) => {
-      const user = userCredential.user;
-      setUserName(user.email); 
-      
-     
-    });
-  };
+    try{
+     const userCredential=await createUserWithEmailAndPassword(auth, email, password)
+     const user=userCredential.user;
+     await updateProfile(user,
+    {
+      displayName:userName
+    })
+     console.log(setUserName(user.displayName));
+     console.log("Sigunp successful",user) // 
+     return {...user, displayName:userName};
+
+   }catch(error){
+   console.log(error)
+   throw error;
+   }
+}
+    
+
   const login=(email ,password)=>{
     return signInWithEmailAndPassword(auth ,email,password )
   }
