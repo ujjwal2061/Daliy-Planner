@@ -5,13 +5,17 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 const Login=()=>{
-    const {login} =useFirebase()
+    const {login,userName} =useFirebase()
     const navgation=useNavigate();
     const [error ,setError]=useState(false)
     const errorTimeRef=useRef(null)
     // Function to handle login 
     const handlelogin=async(e)=>{
         e.preventDefault()
+        if(userName || localStorage.getItem("userName")){
+          navgation("/content" ,{replace :true})
+          return;
+        }
      try{
       await login(email ,password)
       navgation("/content")
@@ -19,7 +23,7 @@ const Login=()=>{
         setError(true)
         // use the useRef for remove the error
         if(errorTimeRef.current){
-            clearInterval(errorTimeRef.current)
+            clearTimeout(errorTimeRef.current)
         }
          errorTimeRef.current=setTimeout(()=>{
             setError("");
