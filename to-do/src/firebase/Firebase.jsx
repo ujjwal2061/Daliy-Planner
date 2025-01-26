@@ -1,9 +1,9 @@
 import { initializeApp } from "firebase/app";
-import { createContext, useContext, useState  } from "react";
+import { createContext, useContext, useEffect, useState  } from "react";
 import {getAuth, signInWithEmailAndPassword} from "firebase/auth"
 import { createUserWithEmailAndPassword ,updateProfile } from "firebase/auth";
 import {getFirestore} from "firebase/firestore"
-
+import { onAuthStateChanged } from "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyCbbONxZqKhdqs-lHirZjjGfKrTWIFQ2Ok",
   authDomain: "chat-app-04.firebaseapp.com",
@@ -34,6 +34,7 @@ const FirebaseContext=createContext();
     {
       displayName:userName
     })
+     setUserName(userName);
      console.log(setUserName(user.displayName));
      console.log("Sigunp successful",user) // 
      return {...user, displayName:userName};
@@ -43,11 +44,19 @@ const FirebaseContext=createContext();
    throw error;
    }
 }
-    
-
-  const login=(email ,password)=>{
+ const login=(email ,password)=>{
     return signInWithEmailAndPassword(auth ,email,password )
   }
+  useEffect(()=>{
+    const unsubscribe=onAuthStateChanged(auth,(user)=>{
+      if(user){
+        setUserName(user.displayName || "");
+      }else{
+        setUserName("")
+      } 
+    })
+   return ()=>unsubscribe;
+  },[])
     return(
 
         <FirebaseContext.Provider value={{singup ,login ,auth,db,userName ,setUserName}}>
