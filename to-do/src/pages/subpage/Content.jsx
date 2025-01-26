@@ -2,17 +2,16 @@ import {useSelector ,useDispatch} from "react-redux"
 import { addTodoFirebase,deleteTodoFirebase,fetchTodos ,updateTodoFirebase} from "../../redux/Slice";
 import { useEffect, useState } from "react";
 import { useFirebase } from "../../firebase/Firebase";
-import{serverTimestamp} from "firebase/firestore"
+import { Outlet } from "react-router-dom";
+import Sidebar from "./sidebar/Sidebar";
 const Content=()=>{
         const { db } = useFirebase();
-
+       const [show ,setShow]=useState(false)
         const [editID,setEditId]=useState(false)
         const [task ,setTasks]=useState(
                 {
                 text:"",
-                description:"" ,
-                date:new Date().toISOString().split("T")[0]
-                        
+                description:"" ,             
         })
 
       const handleChange=(e)=>{
@@ -23,8 +22,6 @@ const Content=()=>{
           }
         ))
         }
-
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchTodos(db));
@@ -36,13 +33,13 @@ const Content=()=>{
  // This Fuunction is handle the Add and Editable when user Clik the Edit then the Tasks Appear at the
  //  Input box and the Upadat button show
  const hanldeadd=(text ,description,id)=>{
-  const date = serverTimestamp();
+  
         if(editID){
                 dispatch(updateTodoFirebase({db,id }))
                 setEditId(true)
         }else{
-                dispatch(addTodoFirebase({db,text ,description,date}))
-                setTasks({text:"",description:"" ,date:new Date().toISOString().split("T")[0],})
+                dispatch(addTodoFirebase({db,text ,description}))
+                setTasks({text:"",description:"" ,})
         }
         console.log(setTasks)
  }
@@ -55,15 +52,21 @@ const Content=()=>{
    const Editable=(todo)=>{
         setTasks({text:todo.text,
           description:todo.description,
-          date:todo.date
         })
         setEditId(todo.id)
    }
 
-    return (
 
- <section className="h-screen bg-background ">
-        <div className="p-2 flex flex-col justify-center items-center">
+return (
+ <section className="flex  h-screen">
+      <Sidebar  className="border-r-[1px] border-gray-600" />
+      <main className="flex-1  transition-all duration-300 h-full  flex-row ">
+      <Outlet />
+     </main>
+ </section>
+  )}
+  export default Content;
+        {/* <div className="p-2 flex flex-col justify-center items-center">
   <div className="flex flex-row items-center justify-center p-2">
     <h1 className="font-atma font-semibold text-text bg-background text-3xl px-4 rounded-md">
       DAILY PLANNER
@@ -92,7 +95,7 @@ const Content=()=>{
 </div>
 
         {/*Showing the List */ }
-    <div>
+    {/* <div>
         { todos && todos.map((todo,index)=>(
                 <div key={index}>
                         <h1>{todo.text}</h1>
@@ -104,8 +107,4 @@ const Content=()=>{
                         <button onClick={()=>deletetask(todo.id)}>Delete</button>
                 </div>
         ))}
-    </div>
-</section>
-)
-}
-export default Content;
+    </div> */} 
