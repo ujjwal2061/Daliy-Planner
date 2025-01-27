@@ -16,7 +16,7 @@ const Signup = () => {
     const handleSignup = async (e) => {
        e.preventDefault();
        // password vaildation checking
-          if(password.length >8){
+          if(password.length <8){
             setError('Password must be at least 8 characters')
             return false
           }

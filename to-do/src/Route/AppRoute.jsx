@@ -5,7 +5,7 @@ import {  createBrowserRouter, RouterProvider,  } from "react-router-dom";
   import PrivateLayout from "../PrivateLayout/PrivateLayout";
   import Mainpage from "../pages/Mainpage";
   import Errorpage from "../pages/error/Errorpage";
-  import Useracc from "../User/useracc";
+  import Useracc from "../User/Useracc";
   import Stats from "../User/Stats";
   import Calender from "../User/Calender";
 import Workplace from "../User/Workplace";
@@ -26,7 +26,7 @@ const router=createBrowserRouter([
       { path: "home", element: <Workplace /> },
       { path: "calendar", element: <Calender /> },
       { path: "stats", element: <Stats /> },
-      { path: "useracc", element: <Useracc /> },
+      { path: "account", element: <Useracc /> },
     ]
 }
   ]);
