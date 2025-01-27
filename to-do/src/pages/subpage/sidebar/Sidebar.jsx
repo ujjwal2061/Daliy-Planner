@@ -30,7 +30,7 @@ export default function Sidebar({className}) {
       {
         id:4,
         name:"Profile",
-        link:'useracc',
+        link:'account',
         icons:"👤"
       },
     ]
