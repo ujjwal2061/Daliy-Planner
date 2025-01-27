@@ -21,7 +21,7 @@ const firebaseConfig = {
 
 const FirebaseContext=createContext();
   
-  export const useFirebase=()=>useContext(FirebaseContext);
+  export const useFirebase=()=>useContext(FirebaseContext); // use this as a Conyext API 
 
  export const FirebaseProvider=({children})=>{
   const [userName ,setUserName]=useState("")
