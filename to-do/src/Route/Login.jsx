@@ -44,9 +44,7 @@ const Login=()=>{
         const [showPassword ,setShowpassword]=useState(false)
     return(
 <section className="min-h-screen flex flex-col justify-center items-center bg-gray-100 gap-6">
-  <div className="w-[50%] md:mr-4 mr-8 px-2 py-2">
-     <button  onClick={backbtn} type="submit"  className=" flex justify-center items-center  bg-gray-950 px-4 py-2 sm:w-[30%] md:w-[20%] rounded-lg text-white font-semibold text-xl hover:bg-gray-900"  >Back</button>
-  </div>
+ 
   <div className="px-6 py-8 bg-white rounded-md shadow-lg w-[80%] sm:w-[500px]">
     <h2 className="text-2xl font-semibold text-center mb-5">Login</h2>
     <div className="space-y-4">

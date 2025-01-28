@@ -12,7 +12,7 @@ const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword ,setShowpassword]=useState(false)
-
+    const [loading ,setLoding]=useState(false)
     const handleSignup = async (e) => {
        e.preventDefault();
        // password vaildation checking
@@ -35,6 +35,7 @@ const Signup = () => {
           setError('');
           // If all Valiad 
           try {
+            setLoding(true);
             const user=await singup(email, password,userName);
             localStorage.setItem("UserEmail",user.email)
             localStorage.setItem("DisplayName",userName)
@@ -47,6 +48,8 @@ const Signup = () => {
          } catch (err) {
             console.log(err)
             setError(err.message);
+         }finally{
+          setLoding(false)
          }
       };
       const showpassword=(e)=>{
@@ -103,8 +106,9 @@ const Signup = () => {
           <button
             onClick={handleSignup}
             type="submit"
+            disabled={loading}
             className="bg-gray-950 px-4 py-2 w-full rounded-lg text-white font-semibold text-xl hover:bg-gray-900"  >
-            Signup
+           {loading ? "Signing up..." : "Signup"}
           </button>
         </div>
    
