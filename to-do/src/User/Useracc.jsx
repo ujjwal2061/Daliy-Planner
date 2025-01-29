@@ -13,18 +13,30 @@ const Useracc=()=>{
    const [newUserName ,setnewUserName] =useState("")
    const [Bio,setBio]=useState("")
    const [editMode, setEditMode] = useState(false);
+   const [showEmail ,setShowEmail]=useState(false)
+   const [loading ,setLoading]=useState(false)
    const Max_Bio_Text=120;
    const fileInputImage=useRef(null)
    const profileInputImage=useRef(null)
-    const {userName ,setUserName ,database} =useFirebase()
+   const {userName ,setUserName ,database,Logout} =useFirebase()
+   const  auth=getAuth(); 
+   const user=auth.currentUser; 
    useEffect(()=>{
       const storedprofilePic=localStorage.getItem("profileImage")
       const storedcoverImage=localStorage.getItem('userCoverImage')
+      const storedName=localStorage.getItem('userName')
+      const storedBio=localStorage.getItem("Bio")
       if(storedcoverImage){
          setCoverImage(storedcoverImage);
       }
       if(storedprofilePic){
        setProfileImage(storedprofilePic)
+      }
+      if(storedName){
+         setUserName(storedName)
+      }
+      if(storedBio){
+         setBio(storedBio)
       }
    },[])
    // upoload image coverfunction
@@ -56,8 +68,6 @@ const Useracc=()=>{
       //  Update the userName and the ProfileImage and the CoverImage
       
         const handleChangeProfile=async()=>{
-         const  auth=getAuth();
-         const user=auth.currentUser;
          try{
             const userRef=ref(database,`users/${user.uid}`);
             await update (userRef,{
@@ -67,22 +77,49 @@ const Useracc=()=>{
                profileImage:profileImage
             })
             setUserName(newUserName)
+            // save the user Info at the local storage
             localStorage.setItem('profileImage',profileImage);
             localStorage.setItem('CoverImage',coverImage);
+            localStorage.setItem('userName', newUserName);
+            localStorage.setItem('Bio', Bio);
+            localStorage.setItem("UserEmail",user.email)
             setEditMode(false)
-            console.log("user New Info")
          }catch(error){
             console.log(error)
             throw error
          }
         }
+         // show and unShow  Email
+         const handleshowEmail = () => {
+            setShowEmail(prevState => !prevState); // Toggle the email visibility
+          };
+          //logout fucntion 
+          const handleLogout=async()=>{
+            try{
+               setLoading(true)
+               await Logout(auth)
+               localStorage.removeItem("profileImage");
+               localStorage.removeItem("userCoverImage");
+               localStorage.removeItem("userName");
+               localStorage.removeItem("Bio");
+               localStorage.removeItem("UserEmail");
+               setUserName(""); 
+               setProfileImage(null);
+               setCoverImage(null);
+               setBio("");
+            }catch(error){
+            throw  error
+            }finally{
+               setLoading(false)
+            }
+          }
   return (
-       <section className={` bg-slate-500  h-screen  ${theme==="dark" ? "bg-zinc-800 text-white":"bg-white text-black"}`}>
-          {/*First Section For iamger and Pesonal INfroamtion*/}
+       <section className={` min-h-screen  ${theme==="dark" ? "bg-zinc-800 text-white":"bg-white text-black"}`}>
+          {/*First Section For Coverimage  and Pesonal INfroamtion*/}
           <div className='flex flex-col  justify-center items-center  '>
              <div className="relative w-full max-w-4xl group  cursor-pointer px-2 py-2" onClick={()=>fileInputImage.current.click()} >
                <input  ref={fileInputImage} type='file' accept='image/*'  onChange={handledImageupload} style={{ display:"none" }} />
-                <img  src={coverImage || './'}className=' w-full h-64 object-cover rounded-lg group-hover:opacity-40 transition-opacity' />
+                <img  src={coverImage ||  'cover.jpeg'}className=' w-full h-64 object-cover rounded-lg group-hover:opacity-40 transition-opacity' />
                 <div className='absolute inset-0 flex items-center justify-center text-black  opacity-0 group-hover:opacity-50 '>
                   <span className=' px-2  rounded-lg bg-opactiy-20  bg-slate-200 tracking-tighter font-sans font-semibold'>Change Cover photo</span>
                 </div>
@@ -91,13 +128,13 @@ const Useracc=()=>{
            <div className={`w-[80%] sm:w-[95%] max-w-4xl px-2    py-1 m-2 flex sm:flex-row    items-center rounded-md  flex-col gap-2 ${theme==="dark" ? "bg-zinc-900 text-white":"bg-slate-600 text-black"}` }>
              {editMode ? (
                <>
-                <div className="px-2  cursor-pointer group    rounded-lg " onClick={()=>profileInputImage.current.click()}>
-                 <input ref={profileInputImage} type='file' accept='image/*' onChange={profileImagehandle}  style={{ display:"none" }}  />
+                <div className="px-2  cursor-pointer group    rounded-lg " onClick={()=>profileInputImage.current.click()} >
+                 <input ref={profileInputImage || 'profile.jpg' } type='file' accept='image/*' onChange={profileImagehandle}  style={{ display:"none" }}  />
                  <img  src={profileImage} className='w-20 h-20 object-coverr object-cover  group-hover:opacity-40 transition-opacity  rounded-full' />
                 </div>
                <div className=' px-2 py-1  h-52 sm:h-56 sm:w-[80%] flex flex-col  justify-between w-[70%] rounded'>
                   <label className="font-mono spacey-1 text-sm font-semibold mr-2 ">UserName</label>
-                   <input type="text" value={userName} onChange={(e)=>setnewUserName(e.target.value)} className="text-sm  text-black font-jetbrains sm:w-1/2 w-28  rounded-md px-2 py-1"/>
+                   <input type="text" value={newUserName} onChange={(e)=>setnewUserName(e.target.value)} className="text-sm  text-black font-jetbrains sm:w-1/2 w-28  rounded-md px-2 py-1"/>
                    <h2 className='font-mono   font-semibold text-sm'>Bio</h2>
                    <textarea type='text' value={Bio} 
                     maxLength={Max_Bio_Text}
@@ -112,23 +149,37 @@ const Useracc=()=>{
                     </>
                   ):(
                      <>
-                 <div className="px-2 cursor-pointer group rounded-lg">
+                 <div className={`px-2 cursor-pointer group rounded-lg ${theme==="dark" ? "bg-zinc-900 text-white":"bg-slate-600 text-black"}` }>
                      <img src={profileImage} className='w-20 h-20 object-cover group-hover:opacity-40 transition-opacity rounded-full' />
                   </div>
-                  <div className=' px-2 py-1  h-52 sm:h-56 sm:w-[80%] flex flex-col   w-[70%] rounded bg-pink-500'>
+                  <div className=' px-2 py-1  h-52 sm:h-56 sm:w-[80%] flex flex-col   w-[70%] rounded '>
                   <label className="font-mono spacey-1 text-sm font-semibold mr-2 ">UserName</label>
-                    <p className='bg-slate-200 sm:w-1/2 w-28 rounded-lg px-2  font-mono  text-black py-1'>{userName}</p>
+                    <p className=' sm:w-1/2 w-28  h-8 rounded-lg px-2 cursor-text font-mono  bg-slate-100 text-black py-1'>{ newUserName || userName}</p>
+                     <h3 className='font-semibold font-mono'>Bio</h3>
+                     <p className='font-mono text-sm w-full sm:w-1/2  h-32 rounded-lg cursor-text   bg-slate-100 text-black px-2 py-1  '>{Bio || "Set the Bio"}</p>
+                  <div className=' mt-2 bg-gray-800 hover:bg-gray-900 px-2 py-1 h-10  w-20   items-center  flex justify-center font-mono font-semibold rounded-md'>
+                   <button onClick={()=>setEditMode(true)}>Edit</button>
                   </div>
-                  <div className='text-right text-xs text-gray-600'>
-                     <p>{Bio}</p>
-                   </div>
-                  <div onClick={()=>setEditMode(true)} className='bg-gray-800 hover:bg-gray-900 px-2 py-1 h-10  w-20   items-center  flex justify-center font-mono font-semibold rounded-md'>
-                   <button>Edit</button>
                   </div>
-                
                     </>
                   )}
            </div>
+              <div className={` hidden md:block w-[450px] h-16 px-3 py-2 m-2 mr-56  md:mr-[450px] flex-row  justify-center items-center rounded-md   gap-2 ${theme==="dark" ? "bg-zinc-900 text-white":"bg-slate-600 text-black"}` }>
+               <div className={`flex  flex-row justify-between    rounded-md items-center px-1 ml-2 ${theme==="dark" ? "bg-zinc-900 text-white":"bg-slate-600 text-black"}`}>
+               <p className='font-mono  flex  font-semibold'>Email:</p>
+              {user && showEmail  &&  (
+                 <h2 className='font-mono text-sm  mr-48 font-semibold'>{user.email}</h2> 
+               )}
+                <div className={`  flex-row justify-center items-center   ${theme==="dark" ? "bg-zinc-900 text-white":"bg-slate-600 text-black"}`}>
+                <button type="button"  onClick={handleshowEmail} className='flex bg-slate-800 px-2 py-1  h-8 md:h-8  font-mono  font-semibold rounded-md'>{showEmail ? "Hide":"Show" }</button>
+                </div>
+               </div>
+            </div>
+            <div className='w-1/2 flex justify-start   sm:justify-start mt-4'>
+              <button  onClick={handleLogout}  className='bg-slate-800 text-white px-4 py-2   rounded-md font-mono font-semibold hover:bg-gray-900 transition-all sm:px-6' >
+                {loading ? "Logging out..." : "Logout"}
+            </button>
+            </div>
           </div> 
        </section>
   )
