@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { createContext, useContext, useEffect, useState  } from "react";
 import {getAuth, signInWithEmailAndPassword} from "firebase/auth"
-import { createUserWithEmailAndPassword  } from "firebase/auth";
+import { createUserWithEmailAndPassword ,signOut } from "firebase/auth";
 import {getFirestore} from "firebase/firestore"
 import { onAuthStateChanged ,updateProfile} from "firebase/auth";
 import {getDatabase ,ref,set } from "firebase/database"
@@ -40,7 +40,6 @@ export const useFirebase=()=>useContext(FirebaseContext); // use this as a Conye
      email:user.email
     })
      setUserName(userName);
-     console.log("Sigunp successful",user.displayName || "Guest") // show the userName
      const userDetails={...user, Name:userName ,email:user.email};
      return  userDetails
    }catch(error){
@@ -50,6 +49,9 @@ export const useFirebase=()=>useContext(FirebaseContext); // use this as a Conye
 //  Login Function
  const login=(email ,password)=>{
     return signInWithEmailAndPassword(auth ,email,password )
+  }
+  const Logout=()=>{
+     return signOut(auth)
   }
   useEffect(()=>{
     const unsubscribe=onAuthStateChanged(auth,(user)=>{
@@ -62,7 +64,7 @@ export const useFirebase=()=>useContext(FirebaseContext); // use this as a Conye
    return ()=>unsubscribe;
   },[])
     return(
-        <FirebaseContext.Provider value={{singup ,login ,auth,db,userName ,setUserName ,database}}>
+        <FirebaseContext.Provider value={{singup ,login ,auth,db,userName ,setUserName ,database ,Logout}}>
             {children}
         </FirebaseContext.Provider>
     )
