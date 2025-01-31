@@ -39,7 +39,7 @@ const Signup = () => {
             const user=await singup(email, password,userName);
             localStorage.setItem("UserEmail",user.email)
             localStorage.setItem("DisplayName",userName)
-          setTimeout(() => {
+            setTimeout(() => {
              navigate("/content");
             }, 1000);
             setUserName("")
