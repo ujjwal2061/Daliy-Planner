@@ -1,45 +1,57 @@
 import {useSelector ,useDispatch} from "react-redux"
 import { addTodoFirebase,deleteTodoFirebase,fetchTodos ,updateTodoFirebase} from "../../redux/Slice";
 import { useEffect, useState } from "react";
+import { ThemeContext } from '../../theme/ThemeContext';
+import { useContext } from 'react';
 import { useFirebase } from "../../firebase/Firebase";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./sidebar/Sidebar";
-const Content=()=>{
-        const { db } = useFirebase();
-       const [show ,setShow]=useState(false)
-        const [editID,setEditId]=useState(false)
-        const [task ,setTasks]=useState(
-                {
-                text:"",
-                description:"" ,             
-        })
 
+const Content=()=>{
+  const {theme} =useContext(ThemeContext)
+  const todos=useSelector((state)=>state.todo.todos) // extract the data of the todo list 
+  const shortTermtodos=useSelector((state)=>state.todo.shortTermtodos) // of the shortTerm goals
+  const longtermtodos=useSelector((state)=>state.todo.longtermtodos) // longterm goals 
+  
+  const { db } = useFirebase();
+  const [editID,setEditId]=useState(false)
+  const [category, setCategory] = useState("short-term");
+  const [task ,setTasks]=useState({ text:"",description:"" ,   category: "short-term"})
       const handleChange=(e)=>{
        const {name ,value}=e.target;
           setTasks((prevTask)=>({
                 ...prevTask,
-                [name]:value,
+            [name]:value,
           }
         ))
         }
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchTodos(db));
+    if(db){
+      dispatch(fetchTodos(db));
+    }
   }, [dispatch, db]);
 
- const todos=useSelector((state)=>state.todo.todos)
 
- //Add Function and Upadata Function
- // This Fuunction is handle the Add and Editable when user Clik the Edit then the Tasks Appear at the
- //  Input box and the Upadat button show
- const hanldeadd=(text ,description,id)=>{
-  
+ // Handle the Add Function
+ const hanldeadd=(id)=>{
         if(editID){
-                dispatch(updateTodoFirebase({db,id }))
-                setEditId(true)
+              dispatch(updateTodoFirebase(
+                {db,id, 
+                  text:task.text,
+                  description:task.description,
+                  category:task.category
+                }))
+              setEditId(false)
         }else{
-                dispatch(addTodoFirebase({db,text ,description}))
-                setTasks({text:"",description:"" ,})
+           dispatch(addTodoFirebase(
+            {db,
+              text:task.text,
+              description:task.description,
+              category:task.category
+
+            }))
+           setTasks({text:"",description:"" ,   category: "short-term"})
         }
         console.log(setTasks)
  }
@@ -58,15 +70,11 @@ const Content=()=>{
 
 
 return (
- <section className="flex  h-screen">
+ <section className= {` flex   h-screen  ${theme==="dark" ? "bg-zinc-800 text-gray-900":"bg-white text-black"}`}>
       <Sidebar  className="border-r-[1px] border-gray-600" />
       <main className="flex-1  transition-all duration-300 h-full  flex-row ">
       <Outlet />
-     </main>
- </section>
-  )}
-  export default Content;
-        {/* <div className="p-2 flex flex-col justify-center items-center">
+            <div className="p-2 flex flex-col justify-center items-center">
   <div className="flex flex-row items-center justify-center p-2">
     <h1 className="font-atma font-semibold text-text bg-background text-3xl px-4 rounded-md">
       DAILY PLANNER
@@ -76,13 +84,20 @@ return (
     <div>
       {}
     </div>
-      <input type="date"  value={task.date}onChange={handleChange} />
-    <div className="relative w-full">
+     
+    <div className="relative w-full  gap-2 flex   items-center">
         {task.text ==="" && (
-                <label htmlFor="text" className=" absolute top-2 left-4 text-gray-400">Goals</label>      
+          <label htmlFor="text" className=" absolute top-2 left-4 text-gray-400">Goals</label>      
         )}
-        <input  type="text"  name="text"   value={task.text}   onChange={handleChange}  placeholder=" "  className="px-3 py-2 w-full rounded-md  focus:outline-none focus:border-blue-500"/>
+        <input  type="text"  name="text"   value={task.text}   onChange={handleChange}  placeholder=" "  className="px-3 py-2 w-[450px] rounded-md "/>
+       
+        <select  name="category"  onChange={handleChange} className="bg-green-500 h-10 rounded-md  w-44 px-3 py-1.5 font-jetbrains text-sm font-semibold tracking-tighter cursor-pointer" >
+          <option  value="short-term">Short-Term-Goal</option>
+          <option value="long-term">Long-Term-Goal</option>
+        </select>
+      
     </div>   
+
     <div className="relative w-full">
         {task.description ==="" && (
           <label  htmlFor="description" className="absolute left-4 top-2 text-gray-400">  Description </label>
@@ -91,20 +106,52 @@ return (
       <textarea  type="text" rows={5}   name="description" value={task.description}  onChange={handleChange} placeholder=" " className=" px-3 py-2 w-full   bg-goalsBoxBackground rounded-md border-2 border-gray-300 focus:outline-none focus:border-blue-500" />
     </div>
   </div>
-        <button onClick={()=>hanldeadd(task.text ,task.description.task.date)}>{editID ?"Update":"Add"}</button>
+        <button onClick={()=>hanldeadd(task.text ,task.description )}>{editID ?"Update":"Add"}</button>
 </div>
-
-        {/*Showing the List */ }
-    {/* <div>
-        { todos && todos.map((todo,index)=>(
-                <div key={index}>
-                        <h1>{todo.text}</h1>
-                        <p>{todo.description}</p>
-                        <p className="text-sm text-gray-500">
-                    {new Date(todo.date).toLocaleDateString()}
-                  </p>
-                        <button onClick={()=>Editable(todo)}>Edit</button>
-                        <button onClick={()=>deletetask(todo.id)}>Delete</button>
-                </div>
+      {/* Showing the List */ }
+   <div className="bg-pink-400 justify-center flex flex-col items-center gap-2 ">
+    { todos && todos.map((todo,index)=>(
+      <div key={index} className="bg-zinc-800 w-1/2 px-2 py-1 ">
+        <h1 className="w-1/2 bg-zinc-300 px-2 py-1 rounded-md font-jetbrains text-[16px]">{todo.text}</h1>
+          <p className="">{todo.description}</p>
+          <div className="flex flex-row justify-between bg-red-600 px-2 py-1 rounded-md">
+          <button onClick={()=>Editable(todo)}>Edit</button>
+          <button onClick={()=>deletetask(todo.id)}>Delete</button>
+            </div>
+        </div>
         ))}
-    </div> */} 
+       <h1>Short-Term</h1>
+     
+    { shortTermtodos.map((todo,index)=>(
+      <div key={index} className="bg-zinc-800 w-1/2 px-2 py-1 ">
+        <h1 className="w-1/2 bg-zinc-300 px-2 py-1 rounded-md font-jetbrains text-[16px]">{todo.text}</h1>
+          <p className="">{todo.description}</p>
+          <div className="flex flex-row justify-between bg-red-600 px-2 py-1 rounded-md">
+          <button onClick={()=>Editable(todo)}>Edit</button>
+          <button onClick={()=>deletetask(todo.id)}>Delete</button>
+            </div>
+        </div>
+        ))}
+   
+
+
+
+
+    <h1>Long-Term</h1>
+      
+    {longtermtodos.map((todo,index)=>(
+      <div key={index} className="bg-zinc-800 w-1/2 px-2 py-1 ">
+        <h1 className="w-1/2 bg-zinc-300 px-2 py-1 rounded-md font-jetbrains text-[16px]">{todo.text}</h1>
+          <p className="">{todo.description}</p>
+          <div className="flex flex-row justify-between bg-red-600 px-2 py-1 rounded-md">
+          <button onClick={()=>Editable(todo)}>Edit</button>
+          <button onClick={()=>deletetask(todo.id)}>Delete</button>
+            </div>
+        </div>
+        ))}
+        </div>
+     </main>
+ </section>
+  )}
+  export default Content;
+       
