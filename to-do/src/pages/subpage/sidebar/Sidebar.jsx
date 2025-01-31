@@ -9,12 +9,7 @@ import { LuSunMoon } from "react-icons/lu";
 export default function Sidebar({className}) {
    const {theme ,setTheme}=useContext(ThemeContext);
     const links=[
-      {
-        id:1,
-        name:"Home",
-        link:'home',
-        icons:"🏠"
-      },
+      
       {
         id:2,
         name:"Calendar",
