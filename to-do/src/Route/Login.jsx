@@ -5,22 +5,27 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 const Login=()=>{
-    const {login,userName} =useFirebase()
+    const {login,userName ,setUserName} =useFirebase()
     const navgation=useNavigate();
     const [error ,setError]=useState(false)
+    const [loading ,setLoding]=useState(false)
     const errorTimeRef=useRef(null)
     // Function to handle login 
     const handlelogin=async(e)=>{
         e.preventDefault()
-        if(userName || localStorage.getItem("userName")){
-          navgation("/content" ,{replace :true})
-          return;
-        }
+        // if(userName || localStorage.getItem("userName")){
+        //   navgation("/content" ,{replace :true})
+        //   return;
+        // }
      try{
+      setLoding(true)
       await login(email ,password)
       navgation("/content")
+      setUserName(email)
      }catch(error){
+      setLoding(false)
         setError(true)
+        console.LOG(error)
         // use the useRef for remove the error
         if(errorTimeRef.current){
             clearTimeout(errorTimeRef.current)
@@ -32,9 +37,7 @@ const Login=()=>{
      }
     }
     // back ti the home page 
-    const backbtn=()=>{
-        navgation("/")
-    }
+    
     const showpassword=(e)=>{
         e.preventDefault()
         setShowpassword((prevpassword)=>!prevpassword)
@@ -75,7 +78,7 @@ const Login=()=>{
         type="submit"
         className="bg-gray-950 px-4 py-2 w-full rounded-lg text-white font-semibold text-xl hover:bg-gray-900"
       >
-        Login
+         {loading ? "Loging ...." :"Login"} 
       </button>
     </div>
     <div className="mt-4 text-center">
