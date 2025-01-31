@@ -3,8 +3,8 @@ import { useFirebase } from "../firebase/Firebase";
 
 const PrivateLayout = ({ children} ) => {
   const {userName} =useFirebase()
-  if(! userName && ! localStorage.getItem('username')){
-    return <Navigate to="/" replace />
+  if(! userName && ! localStorage.getItem('userName')){
+    return <Navigate to="/content" replace />
   }
     return <>{children}</> 
   
