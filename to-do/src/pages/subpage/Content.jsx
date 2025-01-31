@@ -24,7 +24,7 @@ const Content=()=>{
             [name]:value,
           }
         ))
-        }
+}
   const dispatch = useDispatch();
   useEffect(() => {
     if(db){
@@ -53,7 +53,7 @@ const Content=()=>{
             }))
            setTasks({text:"",description:"" ,   category: "short-term"})
         }
-        console.log(setTasks)
+       
  }
  //Delete Function
    const  deletetask=(id)=>{
@@ -70,7 +70,7 @@ const Content=()=>{
 
 
 return (
- <section className= {` flex   h-screen  ${theme==="dark" ? "bg-zinc-800 text-gray-900":"bg-white text-black"}`}>
+ <section className= {` flex min-h-screen ${theme==="dark" ? "bg-zinc-800 text-gray-900":"bg-white text-black"}`}>
       <Sidebar  className="border-r-[1px] border-gray-600" />
       <main className="flex-1  transition-all duration-300 h-full  flex-row ">
       <Outlet />
@@ -106,12 +106,18 @@ return (
       <textarea  type="text" rows={5}   name="description" value={task.description}  onChange={handleChange} placeholder=" " className=" px-3 py-2 w-full   bg-goalsBoxBackground rounded-md border-2 border-gray-300 focus:outline-none focus:border-blue-500" />
     </div>
   </div>
-        <button onClick={()=>hanldeadd(task.text ,task.description )}>{editID ?"Update":"Add"}</button>
+      <div className=" w-1/2 flex  justify-start  ml-12 mr-auto items-center px-2 py-1">
+        <button onClick={()=>hanldeadd(task.text ,task.description ,task.category )}
+          className="bg-gray-900 text-white font-bold font-mono text-xl  px-3 py-2  rounded-md">{editID ?"Update":"ADD"}</button>
+          </div>
 </div>
       {/* Showing the List */ }
-   <div className="bg-pink-400 justify-center flex flex-col items-center gap-2 ">
+      <div className=" flex justify-center  px-2 py-2 w-full max-h-full">
+      <div className="   grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-2 px-6 gap-2 w-[98%]">
+       {/*All goals list  Section */}
+    <div className=" w-[80%%] h-auto px-2 py-1 rounded-md ">
     { todos && todos.map((todo,index)=>(
-      <div key={index} className="bg-zinc-800 w-1/2 px-2 py-1 ">
+      <div key={index} className="bg-paper-300 w-full px-2 py-2  flex flex-col gap-2 border-b-2 ">
         <h1 className="w-1/2 bg-zinc-300 px-2 py-1 rounded-md font-jetbrains text-[16px]">{todo.text}</h1>
           <p className="">{todo.description}</p>
           <div className="flex flex-row justify-between bg-red-600 px-2 py-1 rounded-md">
@@ -120,27 +126,12 @@ return (
             </div>
         </div>
         ))}
+        </div>
+          {/*Short term Section */}
+     <div className=" w-full  px-2 py-1 h-auto">
        <h1>Short-Term</h1>
-     
-    { shortTermtodos.map((todo,index)=>(
-      <div key={index} className="bg-zinc-800 w-1/2 px-2 py-1 ">
-        <h1 className="w-1/2 bg-zinc-300 px-2 py-1 rounded-md font-jetbrains text-[16px]">{todo.text}</h1>
-          <p className="">{todo.description}</p>
-          <div className="flex flex-row justify-between bg-red-600 px-2 py-1 rounded-md">
-          <button onClick={()=>Editable(todo)}>Edit</button>
-          <button onClick={()=>deletetask(todo.id)}>Delete</button>
-            </div>
-        </div>
-        ))}
-   
-
-
-
-
-    <h1>Long-Term</h1>
-      
-    {longtermtodos.map((todo,index)=>(
-      <div key={index} className="bg-zinc-800 w-1/2 px-2 py-1 ">
+        { shortTermtodos.map((todo,index)=>(
+          <div key={index} className="bg-paper-300 w-full px-2 py-1  flex flex-col gap-2 border-b-2">
         <h1 className="w-1/2 bg-zinc-300 px-2 py-1 rounded-md font-jetbrains text-[16px]">{todo.text}</h1>
           <p className="">{todo.description}</p>
           <div className="flex flex-row justify-between bg-red-600 px-2 py-1 rounded-md">
@@ -150,8 +141,24 @@ return (
         </div>
         ))}
         </div>
-     </main>
- </section>
+        {/*Long term Section */}
+       <div className=" px-2 py-1  w-full  h-auot">
+         <h1>Long-Term</h1>
+         {longtermtodos.map((todo,index)=>(
+           <div key={index} className="bg-paper-300 w-full   border-b-2  px-3 py-2 ">
+           <h1 className="w-1/2 bg-zinc-300 px-2 py-1 rounded-md font-jetbrains text-[16px]">{todo.text}</h1>
+           <p className="">{todo.description}</p>
+           <div className="flex flex-row justify-between bg-red-600 px-2 py-1 rounded-md">
+             <button onClick={()=>Editable(todo)}>Edit</button>
+             <button onClick={()=>deletetask(todo.id)}>Delete</button>
+            </div>
+         </div>
+        ))}
+      </div>
+  </div>
+   </div>
+ </main>
+</section>
   )}
   export default Content;
-       
+  

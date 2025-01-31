@@ -1,5 +1,5 @@
 import { createSlice,  createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc, } from "firebase/firestore";
+import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc, Timestamp} from "firebase/firestore";
 
 
 
@@ -8,23 +8,25 @@ export const fetchTodos = createAsyncThunk("todo/fetchTodosFirebase", async (db)
     try{
         const todoCollection = collection(db, "list");
         const getList = await getDocs(todoCollection);
-        const todos = getList.docs.map((doc) => ({ id: doc.id,}));
+        const todos = getList.docs.map((doc) => ({ id: doc.id,
+            ...doc.data()
+        }));
         return todos;
     }catch(error){
         console.log(error)
     }
 });
-
 // Adding the Todo to Firebase
 // // this Function were i  add the new task by using the ... operater 
 // where it create the new  array of the each  object  and add to the firebase Db
-export const addTodoFirebase = createAsyncThunk("todo/addToFirebase", async ({db ,text ,description}) => {
+export const addTodoFirebase = createAsyncThunk("todo/addToFirebase", async ({db ,text ,description, category}) => {
     try{
         const todoCollection = collection(db, "list");
         const newTodo = { 
             text, 
             description,
-         
+            category,
+            createdAt: Timestamp.now(),
         };
         const docRef = await addDoc(todoCollection, newTodo);
         return { id: docRef.id, ...newTodo };
@@ -48,20 +50,22 @@ export const deleteTodoFirebase = createAsyncThunk("todo/deleteTodo",
 // Update the Todo list inthis i am Acces theh Firebasee Db and where user can upadatt the there Enter 
 // by using the CreatAsyncThuck 
 export const updateTodoFirebase = createAsyncThunk("todo/updateFirebaseTodo", 
-    async (db ,id) => {
+    async (db ,id ,text,description,category) => {
         try{
             const docRef = doc(db, "list", id);
             await updateDoc(docRef);
-            return id ;
+            return { id  ,text,description ,category};
         }catch(error){
             throw new Error (error.message)
-        }
+       }
 });
 
 export const todoSlice = createSlice({
     name: "todo",
     initialState: {
-        todos: [],
+        todos: [], // all Todo
+        shortTermtodos:[], // short term goal todo list 
+        longtermtodos:[], // long term goal todo list
         status: "idle",
         error: null
     },
@@ -74,7 +78,11 @@ export const todoSlice = createSlice({
           })
           .addCase(fetchTodos.fulfilled, (state, action) => {
             state.status = "succeeded";
+            // category the  goal of user section 
             state.todos = action.payload;
+            state.shortTermtodos=action.payload.filter((todo)=>todo.category==="short-term")
+            state.longtermtodos=action.payload.filter((todo)=>todo.category==="long-term")
+
           })
           .addCase(fetchTodos.rejected, (state, action) => {
             state.status = "failed";
@@ -82,9 +90,16 @@ export const todoSlice = createSlice({
           })
           .addCase(addTodoFirebase.fulfilled, (state, action) => {
             state.todos.push(action.payload);
+            if(action.payload.category==="short-term"){
+                state.shortTermtodos.push(newTodo)
+            }else if(action.payload.category==="long-term"){
+                state.longtermtodos.push(newTodo)
+            }
           })
           .addCase(deleteTodoFirebase.fulfilled, (state, action) => {
             state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+            state.shortTermtodos=state.shortTermtodos.filter(todo.id!==action.payload)
+            state.longtermtodos=state.longtermtodos.filter(todo.id!==action.payload)
           })
           
       },

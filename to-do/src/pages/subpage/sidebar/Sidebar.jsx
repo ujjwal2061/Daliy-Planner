@@ -37,11 +37,11 @@ export default function Sidebar({className}) {
       setTheme((prevtheme)=>(prevtheme==="light"?"dark":"light"))
      }
   return (
-    <div className={`h-full  transition-all  ease-in-out    duration-75 ${ sidebarShow ? "w-60" : "w-16" } flex flex-col ${className} 
+    <div className={` max-h-full transition-all  ease-in-out    duration-75 ${ sidebarShow ? "w-60" : "w-16" } flex flex-col ${className} 
     ${theme === "dark" ? "bg-zinc-900  text-white" : "bg-white text-black"}   `}  >
     <button
       onClick={toggle}
-      className={`absolute text-xl p-2   0  px-2  rounded-lg ${sidebarShow ?  "ml-44":"ml-auto"} `}  >
+      className={`absolute text-xl p-2   0  px-2  rounded-lg sm:${sidebarShow} `}  >
       {sidebarShow ?  (<IoIosArrowBack  size={25} strokeWidth={1.5} />) : (<FiArrowRight   size={25} strokeWidth={1.5}/>) }
     </button>
     <nav className="space-y-2 py-2 h-full flex-col gap-10 px-2 flex">
