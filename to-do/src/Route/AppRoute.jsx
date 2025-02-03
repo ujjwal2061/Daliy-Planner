@@ -8,7 +8,7 @@ import {  createBrowserRouter, RouterProvider,  } from "react-router-dom";
   import Useracc from "../User/Useracc";
   import Stats from "../User/Stats";
   import Calender from "../User/Calender";
-
+  import Workplace from "../User/Workplace"
 
 const router=createBrowserRouter([
 { path:"/", element:<Mainpage /> },  
@@ -23,7 +23,8 @@ const router=createBrowserRouter([
       </PrivateLayout>
     ) ,
     children:[
-  
+      {index:true,element:<Workplace />},
+      { path:"workplace",element:<Workplace /> },
       { path: "calendar", element: <Calender /> },
       { path: "stats", element: <Stats /> },
       { path: "account", element: <Useracc /> },
