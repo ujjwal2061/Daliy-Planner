@@ -40,7 +40,7 @@ const Signup = () => {
             localStorage.setItem("UserEmail",user.email)
             localStorage.setItem("DisplayName",userName)
             setTimeout(() => {
-             navigate("/content");
+              navgation("/content/workplace");
             }, 1000);
             setUserName("")
             setEmail("");

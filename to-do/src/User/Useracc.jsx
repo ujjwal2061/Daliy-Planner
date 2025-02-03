@@ -114,8 +114,9 @@ const Useracc=()=>{
             }
           }
   return (
-       <section className={` min-h-screen  ${theme==="dark" ? "bg-zinc-800 text-white":"bg-white text-black"}`}>
+   <section className={`p-4 min-h-screen flex flex-col items-center ${theme === "dark" ? "bg-[#18191A] text-black" : "bg-[#F0F2F5] text-black"}`}>
           {/*First Section For Coverimage  and Pesonal INfroamtion*/}
+          <div className='flex flex-col justify-start w-full ' >
           <div className='flex flex-col  justify-center items-center  '>
              <div className="relative w-full max-w-4xl group  cursor-pointer px-2 py-2" onClick={()=>fileInputImage.current.click()} >
                <input  ref={fileInputImage} type='file' accept='image/*'  onChange={handledImageupload} style={{ display:"none" }} />
@@ -125,7 +126,7 @@ const Useracc=()=>{
                 </div>
              </div>
           {/*Profile Image */}
-           <div className={`w-[80%] sm:w-[95%] max-w-4xl px-2    py-1 m-2 flex sm:flex-row    items-center rounded-md  flex-col gap-2 ${theme==="dark" ? "bg-zinc-900 text-white":"bg-slate-600 text-black"}` }>
+           <div className={`w-[80%] sm:w-[95%] max-w-4xl px-2    py-1 m-2 flex sm:flex-row    items-center rounded-md  flex-col gap-2 ${theme === "dark" ? " bg-[#242526] text-white" : "bg-boxBackground text-black"}`}>
              {editMode ? (
                <>
                 <div className="px-2  cursor-pointer group    rounded-lg " onClick={()=>profileInputImage.current.click()} >
@@ -149,7 +150,7 @@ const Useracc=()=>{
                     </>
                   ):(
                      <>
-                 <div className={`px-2 cursor-pointer group rounded-lg ${theme==="dark" ? "bg-zinc-900 text-white":"bg-slate-600 text-black"}` }>
+                 <div className="px-2 cursor-pointer group rounded-lg " >
                      <img src={profileImage} className='w-20 h-20 object-cover group-hover:opacity-40 transition-opacity rounded-full' />
                   </div>
                   <div className=' px-2 py-1  h-52 sm:h-56 sm:w-[80%] flex flex-col   w-[70%] rounded '>
@@ -164,23 +165,26 @@ const Useracc=()=>{
                     </>
                   )}
            </div>
-              <div className={` hidden md:block w-[450px] h-16 px-3 py-2 m-2 mr-56  md:mr-[450px] flex-row  justify-center items-center rounded-md   gap-2 ${theme==="dark" ? "bg-zinc-900 text-white":"bg-slate-600 text-black"}` }>
-               <div className={`flex  flex-row justify-between    rounded-md items-center px-1 ml-2 ${theme==="dark" ? "bg-zinc-900 text-white":"bg-slate-600 text-black"}`}>
+           <div className=' flex flex-col justify-start  mr-[245px] items-start w-1/2'>
+              <div className={` hidden md:block w-[450px] h-16 px-3 py-2 m-2  flex-row  justify-center items-center rounded-md   gap-2 ${theme === "dark" ? " bg-[#242526] text-white" : "bg-boxBackground text-black"}` }>
+               <div className="flex  flex-row justify-between    rounded-md items-center px-1 ml-2 ">
                <p className='font-mono  flex  font-semibold'>Email:</p>
               {user && showEmail  &&  (
                  <h2 className='font-mono text-sm  mr-48 font-semibold'>{user.email}</h2> 
                )}
-                <div className={`  flex-row justify-center items-center   ${theme==="dark" ? "bg-zinc-900 text-white":"bg-slate-600 text-black"}`}>
+                <div className="  flex-row justify-center items-center   ">
                 <button type="button"  onClick={handleshowEmail} className='flex bg-slate-800 px-2 py-1  h-8 md:h-8  font-mono  font-semibold rounded-md'>{showEmail ? "Hide":"Show" }</button>
                 </div>
                </div>
             </div>
-            <div className='w-1/2 flex justify-start   sm:justify-start mt-4'>
+            <div className=' w-1/2  '>
               <button  onClick={handleLogout}  className='bg-slate-800 text-white px-4 py-2   rounded-md font-mono font-semibold hover:bg-gray-900 transition-all sm:px-6' >
                 {loading ? "Logging out..." : "Logout"}
             </button>
             </div>
+            </div>
           </div> 
+      </div>
        </section>
   )
 }

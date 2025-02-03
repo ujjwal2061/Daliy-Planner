@@ -20,12 +20,12 @@ const Login=()=>{
      try{
       setLoding(true)
       await login(email ,password)
-      navgation("/content")
+      navgation("/content/workplace");
       setUserName(email)
      }catch(error){
       setLoding(false)
         setError(true)
-        console.LOG(error)
+        console.log(error)
         // use the useRef for remove the error
         if(errorTimeRef.current){
             clearTimeout(errorTimeRef.current)

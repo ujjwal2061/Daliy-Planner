@@ -4,7 +4,7 @@ import { useContext } from 'react';
 const Stats=()=>{
   const {theme} =useContext(ThemeContext)
   return (
-    <section className={` bg-slate-500  h-screen  ${theme==="dark" ? "bg-zinc-800 text-white":"bg-white text-black"}`}>
+    <section className={` min-h-screen  ${theme==="dark" ? "bg-[#18191A] text-white":"bg-[#F0F2F5] text-black"}`}>
     <p>Hello Home</p>
   </section>
   )

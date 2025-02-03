@@ -9,7 +9,12 @@ import { LuSunMoon } from "react-icons/lu";
 export default function Sidebar({className}) {
    const {theme ,setTheme}=useContext(ThemeContext);
     const links=[
-      
+      {
+        id:1,
+        name:"Home", 
+        link:'workplace',
+        icons:"🏘️"
+    },
       {
         id:2,
         name:"Calendar",
@@ -29,6 +34,7 @@ export default function Sidebar({className}) {
         icons:"👤"
       },
     ]
+
     const [sidebarShow ,setSidebarShow]=useState(false)
     const toggle=()=>{
       setSidebarShow((prevState)=>!prevState)
@@ -37,7 +43,7 @@ export default function Sidebar({className}) {
       setTheme((prevtheme)=>(prevtheme==="light"?"dark":"light"))
      }
   return (
-    <div className={` max-h-full transition-all  ease-in-out    duration-75 ${ sidebarShow ? "w-60" : "w-16" } flex flex-col ${className} 
+    <div className={` fixed top-0 left-0 h-full transition-all  ease-in-out    duration-75 ${ sidebarShow ? "w-" : "w-16" } flex flex-col ${className} 
     ${theme === "dark" ? "bg-zinc-900  text-white" : "bg-white text-black"}   `}  >
     <button
       onClick={toggle}
