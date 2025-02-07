@@ -8,6 +8,8 @@ import { useContext } from 'react';
 const Stats=()=>{
 
   const {theme} =useContext(ThemeContext)
+  const [date, setDate] = useState(new Date());
+  // const [contributionPercentage, setContributionPercentage] = useState(0);
   const [startTime,setstartTime]=useState(45*60) // convert the 25 into min  
   const [isStart,setISStart]=useState(false)
   const [breake ,setbreak]=useState(5*60) // convert tha the 5 into 5 min
@@ -46,8 +48,10 @@ const Stats=()=>{
  const handleTimer=()=>{
   if(!isStart){
     setISStart(true)
+   
     timeRef.current=setInterval(()=>{
       setstartTime((prevTime)=>{
+       
         if(prevTime<=1){
           clearInterval(timeRef.current)
           setISStart(false)
@@ -111,6 +115,8 @@ const handlebreaketimer=()=>{
     <section className={` min-h-screen  flex flex-row justify-center items-center ${theme==="dark" ? "bg-[#18191A] text-white":"bg-[#F0F2F5] text-black"}`}>
       <div className=' flex  flex-col justify-center items-center gap-5'>
       <div className='p-2'>
+      
+    
         </div>
         <div className={` flex flex-row gap-2   px-2 py-6 rounded-md ${theme==="dark" ? "bg-zinc-600 text-white":"bg-background text-black"}`}>
         <audio ref={firstRef} src={first} />
