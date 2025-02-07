@@ -7,8 +7,9 @@ import { GrFormNext } from "react-icons/gr";
 import cn from './cn';
 import dayjs from 'dayjs';
 const Calender=() =>{
+  const [schedule ,setSchedule]=useState("")
+  const[listSchedule,setlistSchedule]=useState({})
   const {theme} =useContext(ThemeContext)
-  // const dates = genereteDate(today.month().today.year());
   const days=["S","M","T","W","T","F","S"]
   const currentDate=dayjs()
   const [today ,setToady]=useState(currentDate)
@@ -20,13 +21,32 @@ const Calender=() =>{
   const nextmonths=()=>{
     setToady(today.month(today.month()+1))
   }
+  const handleScheduleInput = (e) => {
+    setSchedule(e.target.value);
+  };
 
+  const saveSchedule = () => {
+    setlistSchedule(prevList => ({
+      ...prevList,
+      // key                                     //value that why we use teh object 
+      [selecedDate.format('YYYY-MM-DD')]: [...(prevList[selecedDate.format('YYYY-MM-DD')] || []), schedule]
+    }));
+    setSchedule("");
+  };
+  const deleteDate=(index)=>{
+    setlistSchedule(prevList=>{
+  const newlist={...prevList};
+  newlist[selecedDate.format('YYYY-MM-DD')]=newlist[selecedDate.format('YYYY-MM-DD')].filter((_, i) => i !== index);
+  return newlist
+    })
+  }
+  console.log(listSchedule)
     return (
     <section className={` min-h-screen  ${theme==="dark" ? "bg-[#18191A] text-white":"bg-[#F0F2F5] text-black"}`}>
-      <div className='w-full flex flex-col   items-center'>
-      <div className='md:w-[50%] w-[40%] flex flex-col  gap-7'>
-
-        <div className='flex flex-row justify-between'>
+      <div className='w-full flex flex-col  items-center'>
+      <div className='md:w-[50%]  flex flex-col gap-7  items-center  justify-center mt-10 '>
+        <div className={` border-2 px-2 py-10 w-96 items-center justify-center   shadow-md rounded-lg ${theme === "dark" ? " bg-[#242526] text-white" : "bg-boxBackground text-black"}`}>
+        <div className='flex flex-row justify-between border-2 px-2 py-1  rounded-md'>
           <h1 className='font-bold text-sm'>{months[today.month()]}<span className='font-semibold px-1 text-sm'>{today.year()}</span></h1>
             <div className='flex items-center gap-3 ' > 
               <GrFormPrevious className='w-5 h-5 cursor-pointer' onClick={previousmonth}/>
@@ -34,28 +54,38 @@ const Calender=() =>{
               <GrFormNext className='w-5 h-5 cursor-pointer' onClick={nextmonths} />
             </div>
           </div>
-      <div className='grid grid-cols-7'>
+      <div className='grid grid-cols-7  t '>
         {days.map((day,index)=>(
-          <h1 key={index} className='text-gray-500 h-12 grid place-content-center font-semibold text-sm'>{day}</h1>
+          <h1 key={index} className='text-bold font-mono text-[19px] h-12 grid place-content-center font-semibold text-sm'>{day}</h1>
         ))}
       </div>
      <div className='grid grid-cols-7'>
         {genereteDate(today.month(),today.year()).map(({date,currentmonth,today},index)=>{
-          return <div key={index} className='h-14  border-t-2 grid place-content-center text-sm'>
+          return <div key={index} className='h-14  border-t-1 grid place-content-center text-sm'>
           <h1 onClick={()=>{
             setSelectedDate(date)
           }}
-           className={cn(currentmonth ? "text-slate-100 font-semibold":"text-gray-500",
+          className={cn(currentmonth ? " font-semibold":"text-gray-500",
             today?"bg-blue-600 font-mono":"",
-            selecedDate.toDate().toDateString()===date.toDate().toDateString() ? "bg-black":"",
-            'h-10 w-10 grid place-content-center rounded-full hover:bg-black cursor-pointer transition-all'
+            selecedDate.toDate().toDateString()===date.toDate().toDateString() ? "bg-black text-white":"",
+            'h-10 w-10 grid place-content-center rounded-full hover:bg-black  hover:text-white cursor-pointer transition-all'
           )}>{date.date()}</h1>
         </div>
         })}
+      </div>
      </div>
      <div className='bg-purple-600 w-full py-2 px-2 rounded-md  flex flex-col  items-center'>
       <h1 className='text-[18px] font-semibold tracking-tighter mr-auto '>Schedule for {selecedDate.toDate().toDateString()}</h1> 
-      <p className=''> No meeting today</p> 
+      <input type='text'  value={schedule} onChange={handleScheduleInput}
+        className='w-full px-2 py-1 rounded-md mt-2 text-black' placeholder='Add your schedule here...'  />
+        <button onClick={saveSchedule}>Save</button>
+        <ul className='w-full mt-2'>
+        {(listSchedule[selecedDate.format('YYYY-MM-DD')] || []).map((item, index) => (
+            <li key={index} className='text-white'>{selecedDate.toDate().toDateString()} {item}
+             <button onClick={()=>deleteDate(index)}>Remove</button>
+            </li>
+          ))}
+            </ul>
      </div>
     </div>
    </div>
