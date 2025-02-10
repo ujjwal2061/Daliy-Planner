@@ -16,12 +16,7 @@ export default {
       semibold: 600,
       bold: 700,
     },
-    backgroundImage: {
-      'grid-gradient': `
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)),
-        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.1) 0px, rgba(255, 255, 255, 0.1) 1px, transparent 1px, transparent 20px),
-        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0px, rgba(255, 255, 255, 0.1) 1px, transparent 1px, transparent 20px)
-      `},
+    
       colors:{
         mainbackground:"#fefdfc",
         background:'#f4f4e2',
@@ -31,17 +26,7 @@ export default {
         goalsBoxBackground: '#d6e9f3',
         highlight: '#fdd9c4',
         noteBackground: '#e3f1fc',
-        paper: {
-          100: '#F9F9F9',
-          200: '#F5F5F5',
-          300: '#F0F0F0',
-          400: '#E6E6E6',
-          500: '#D3D3D3',
-          600: '#BFBFBF',
-          700: '#A9A9A9',
-          800: '#8A8A8A',
-          900: '#696969',
-        },
+       
       }
   },
   plugins: [],
