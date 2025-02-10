@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect ,useState } from "react"
 import { NavLink } from "react-router-dom"
 import { TiThMenu } from "react-icons/ti";
 import { IoIosArrowBack } from "react-icons/io";
@@ -8,6 +8,19 @@ import { useContext } from "react";
 const Home=()=>{
   const {theme ,setTheme}=useContext(ThemeContext);
   const [isshow ,setIsshow]=useState(false)
+  const [isScrolled,setIsScrolled]=useState(false);
+  useEffect(()=>{
+    const handleScroll=()=>{
+      if(window.scrollY>10){
+        setIsScrolled(true)
+      }else{
+        setIsScrolled(false)
+      }
+    };
+    window.addEventListener('scroll',handleScroll);
+      return ()=> window.removeEventListener('scroll',handleScroll);
+    
+  },[]);
     const links=[
       {
         id:1,
@@ -45,27 +58,30 @@ const Home=()=>{
     setTheme((prevtheme)=>(prevtheme==="light"?"dark":"light"))
    }
     return(
-      <section className={` min-h-screen ${theme === "dark" ? "bg-black  text-white" : "bg-white text-black"}`}>
-        <nav className={`  ${theme==='dark' ? "bg-zince-900 text-white":""}      flex justify-between items-center sm:px-5 py-2  border-b-2  left-0 right-0 z-50   transition-all duration-300 ease-in-out `}>
-          <div className="flex items-center ml-2 ">
-            <NavLink to="/" className="text-2xl sm:text-3xl"><TbCone /></NavLink>
-             <NavLink to="/" className="ml-1 mt-1  text-xl sm:hidden font-mono font-semibold md:block hidden ">Daliy Planner</NavLink>
-            </div>
-          <div className=" items-center ml-auto   justify-center gap-6  hidden md:flex ">
-            {sectiion.map((items)=>(
-              <NavLink key={items.id} to={items.link} className=" font-semibold text-[17px] rounded-md px-3 hover:px-3 " >{items.name}</NavLink>
-            ))}
-          </div>
-         
+<section className={` min-h-screen ${theme === "dark" ? "bg-black  text-white" : "bg-mainbackground text-black"}`}>
+  <nav className={` 
+   ${theme==='dark' ? isScrolled ?  
+   "bg-zinc-900 backdrop-blur-sm text-white" : "bg-black text-white":isScrolled ? "bg-mainbackground text-black backdrop-blur-sm"
+   : "bg-transparent text-black "}    flex justify-between items-center sm:px-5 py-2   fixed  top-0  left-0 right-0   transition-all duration-300 ease-in-out   `}>
+      <div className="flex items-center ml-2 ">
+        <NavLink to="/" className="text-2xl sm:text-3xl"><TbCone /></NavLink>
+          <NavLink to="/" className="ml-1   text-xl sm:hidden font-mono font-semibold md:block hidden ">Daliy Planner</NavLink>
+         </div>
+         <div className=" items-center ml-auto   justify-center gap-6  hidden md:flex ">
+           {sectiion.map((items)=>(
+            <NavLink key={items.id} to={items.link} className=" font-semibold text-[17px] rounded-md px-3 hover:px-3 " >{items.name}</NavLink>
+           ))}
+     </div>
         
-          <div className="flex  items-center md:gap-6 gap-4">
-           <NavLink key={links[0]} to={links[0].link}  className="font-semibold font-mono border-l-2 px-1.5">{links[0].name}</NavLink>
+        
+     <div className="flex  items-center md:gap-6 gap-4">
+       <NavLink key={links[0]} to={links[0].link}  className="font-semibold font-mono border-l-2 px-1.5">{links[0].name}</NavLink>
            <spna onClick={ThemeToggle} className="text-2xl cursor-pointer rounded-md" > {theme === "light" ? "☀️" : "🌙"}</spna>
-           <div className="p-1">
-            <NavLink to="/signup" ><p className={`md:block hidden rounded-md px-2 py-1 b border-2  font-medium  cursor-pointer   ${theme==="dark" ?"bg-white text-black":"bg-zinc-950 text-white hover:bg-zinc-800"}`}>Start Now</p></NavLink>
-           </div>
+         <div className="p-1">
+           <NavLink to="/signup" ><p className={`md:block hidden rounded-md px-2 py-1 b border-2  font-medium  cursor-pointer   ${theme==="dark" ?"bg-white text-black":"bg-zinc-950 text-white hover:bg-zinc-800"}`}>Start Now</p></NavLink>
+        </div>
            
-           <div className="md:hidden mr-2">
+      <div className="md:hidden mr-2">
            <button  onClick={toogle}>
             {isshow ? (
               <IoIosArrowBack size={24}/>
@@ -73,60 +89,48 @@ const Home=()=>{
               <TiThMenu />
             )}
           </button>
-            </div>
-            </div>
-          {isshow && (
-            <div className={`${theme=="dark" ?"text-black":"text-black"} absolute w-1/2 mt-2 border  bg-white text-black md:hidden transition-all duration-300  rounded-md  top-11  z-10 right-0  flex-col ${isshow ?' flex flex-col':"hidden"}`}>
-               {links.map((items)=>(
-                 <NavLink key={items.id} to={items.link} className="px-5 py-2 font-semibold font-mono hover:bg-gray-400 hover:text-black" >{items.name}</NavLink>
-                ))}
-            </div>
-          )}
-        </nav>
-        
-        <div className="relative flex mt-2 justify-center items-center">
-        <div className="px-3 py-2 w-full sm:w-[90%] md:w-[80%] flex justify-center">
-          <img  src="Font.jpeg"   alt="Main Display"  className="object-cover w-full max-h-[350px] sm:max-h-[450px] md:max-h-[550px] rounded-xl" />
-        </div>
-
-        <div className="absolute inset-x-0 bottom-4 sm:bottom-8 md:bottom-16 flex flex-col justify-center items-center text-center text-white px-4">
-          <h5 className="text-lg sm:text-xl md:text-2xl font-semibold font-mono mb-2">   Plan your day, every day </h5>
-          <p className="text-sm sm:block hidden  md:text-xl font-semibold font-mono max-w-2xl"> Make time for what&#39;s important. Get started with Daily Planner.  </p>
-        </div>
-      </div>
-
-      <div className="mt-6 p-2 flex flex-row  justify-start md:ml-36 ml-11  w-[80%] items-center">
-        <div  className="flex-col  px-2 " >
-        <h1 className="text-3xl font-sans font-bold ">How it Work</h1>
-        <p className="font-mono  tracking-tight text-[18px] font-semibold">Daily Planner helps you make the most of the each day </p>
-        </div>
-      </div>
-  
-      <div className=" ml-5 sm:ml-10 md:ml-16 lg:ml-32 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-[90%] lg:w-[80%] mx-auto md:gap-6 gap-2">
-        
-       <div className="text-center col-span-1 py-4 w-full flex  flex-col justify-center  p-1">
-        <div className="aspect-w-4 aspect-h-3 w-[95%] flex px-2  ">
-         <img src="one.jpeg" className="object-cover   sm:w-[80%] md:w-full lg:w-full h-auto rounded-xl cursor-pointer shadow-xl  transition-transform duration-500 ease-in-out hover:scale-105" />
-        </div>
-          <h3 className="font-semibold font-jetbrains text-left mt-4  ">Set a new Plan every day </h3>
-          <p className="font-mono font-semibold text-left text-sm text-gray-500 ml-2 ">Based on Your Schedule and Goals </p>
-       </div>
-
-       <div className="text-center py-4 col-span-1 flex flex-col  justify-center p-1">
-       <div className="aspect-w-4 aspect-h-3 w-[95%] flex  px-2  ">
-         <img src="work.jpeg" className=" object-cover sm:w-[80%] md:w-full lg:w-full  h-auto rounded-xl cursor-pointer shadow-xl transition-transform duration-500 ease-in-out hover:scale-105" />
-        </div>
-         <h3 className=" font-semibold text-left mt-2 font-jetbrains">Set a new Plan every day </h3>
-          <p className="font-mono font-semibold text-left text-sm text-gray-500  ml-2 ">Based on Your Schedule and Goals </p>
-       </div>
-
-       <div className="md:hidden flex-col  flex   lg:block  col-span-1 py-4  justify-center ">
-       <div className="aspect-w-4 aspect-h-3 w-[95%] flex px-2 ">
-         <img src="third.jpeg" className="  object-cover sm:w-[80%] md:w-full lg:w-full  h-auto rounded-xl cursor-pointer shadow-xl transition-transform duration-500 ease-in-out hover:scale-105" />
-          </div>
-       </div>
+         </div>
     </div>
-        </section>
+      {isshow && (
+         <div className={`${theme=="dark" ?"text-black":"text-black"} absolute w-1/2  border  bg-white text-black md:hidden transition-all duration-300  rounded-md  top-11  z-10 right-0  flex-col ${isshow ?' flex flex-col':"hidden"}`}>
+          {links.map((items)=>(
+            <NavLink key={items.id} to={items.link} className="px-5 py-2 font-semibold font-mono hover:bg-gray-400 hover:text-black" >{items.name}</NavLink>
+            ))}
+          </div>
+       )}
+  </nav>
+          
+<div className=" flex flex-col lg:flex-row lg:justify-between items-center py-4 px-10 mt-12">
+  <div className=" lg:w-1/2 w-full flex flex-col gap-3 justify-center p-4 bg-gradient-to-r">
+  <div className="absolute lg:top-60 top-24 left-8 w-40 h-16 bg-white opacity-50 blur-3xl"></div>
+    <h1 className="font-myfont  font-semibold text-4xl text-center lg:text-left">
+        Organize your work and life, <br /> with help of your <br /> Daily Planner.</h1>
+        <p className="font-myfont text-xl font-semibold text-gray-600 text-center lg:text-left">
+        Simplify your life & be more productive.
+       </p>
+    <div className="flex justify-center lg:justify-start lg:mt-5 ">
+        <NavLink to="/signup">
+          <p
+            className={`w-24 rounded-md px-2 py-1 font-medium cursor-pointer ${
+              theme === "dark"
+              ? "bg-white text-black"
+              : "bg-zinc-950 text-white hover:bg-zinc-800"
+            }`} >Start Now </p>
+        </NavLink>
+      </div>
+      </div>
+      <div className="lg:w-1/2 w-full flex justify-center p-4">
+      <img
+        src="Font.jpeg"
+        alt="Main Display"
+        className="object-cover w-full max-w-[550px] max-h-[350px] sm:max-h-[450px] md:max-h-[550px] rounded-xl" />
+    </div>
+  </div>      
+    <div className="  px-6  flex flex-col gap-5 ">
+      <h1 className="font-myfont  font-semibold text-6xl lg:text-left text-center "> How it Work</h1>
+      <p className="font-myfont text-[18px] lg:text-left text-center">Daliy Plnner help you make the most of each day</p>
+    </div>
+</section>
     )
 }
 
