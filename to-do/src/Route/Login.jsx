@@ -5,7 +5,7 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 const Login=()=>{
-    const {login,userName ,setUserName} =useFirebase()
+    const {login ,setUserName} =useFirebase()
     const navgation=useNavigate();
     const [error ,setError]=useState(false)
     const [loading ,setLoding]=useState(false)
@@ -13,10 +13,6 @@ const Login=()=>{
     // Function to handle login 
     const handlelogin=async(e)=>{
         e.preventDefault()
-        // if(userName || localStorage.getItem("userName")){
-        //   navgation("/content" ,{replace :true})
-        //   return;
-        // }
      try{
       setLoding(true)
       await login(email ,password)
@@ -24,8 +20,16 @@ const Login=()=>{
       setUserName(email)
      }catch(error){
       setLoding(false)
-        setError(true)
-        console.log(error)
+      if(error.code==="auth/invalid-email"){
+        setError("Invalid email format. Please check your email.")
+      }else if(error.code==="auth/user-not-found"){
+        setError("No account Found")
+      }else if(error.code==="auth/wrong-password"){
+        setError("Incorrect password")
+      } else {
+        setError("An error occurred. Please try again.");
+    }
+        
         // use the useRef for remove the error
         if(errorTimeRef.current){
             clearTimeout(errorTimeRef.current)
@@ -33,10 +37,9 @@ const Login=()=>{
          errorTimeRef.current=setTimeout(()=>{
             setError("");
          },3000)
-         console.log(error)
      }
     }
-    // back ti the home page 
+    // back to the home page 
     
     const showpassword=(e)=>{
         e.preventDefault()
@@ -46,7 +49,7 @@ const Login=()=>{
         const [password ,setPassword]=useState("")
         const [showPassword ,setShowpassword]=useState(false)
     return(
-<section className="min-h-screen flex flex-col justify-center items-center bg-gray-100 gap-6">
+<section className="min-h-screen   flex flex-col justify-center items-center bg-gray-100 gap-6">
  
   <div className="px-6 py-8 bg-white rounded-md shadow-lg w-[80%] sm:w-[500px]">
     <h2 className="text-2xl font-semibold text-center mb-5">Login</h2>
@@ -70,7 +73,7 @@ const Login=()=>{
           {showPassword ? <FaEye /> : <FaEyeSlash />}
         </button>
       </div>
-      <p className="text-red-500 text-sm text-center">{error}</p>
+   
     </div>
     <div className="flex justify-center mt-6">
       <button
@@ -90,6 +93,7 @@ const Login=()=>{
       </p>
     </div>
   </div>
+  {error &&  <p className="mt-10 absolute bottom-12 right-7 bg-red-600 px-3 py-2 font-mono rounded-md text-white">{error}</p>}  
 </section>
 
     )
