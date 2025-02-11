@@ -5,18 +5,12 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        lightfont:"Itim",
         myfont:"Work Sans",
         jetbrains: ['JetBrains Mono', 'monospace'],
         handwriting: ['Caveat', 'sans-serif'],
         atma: ['Atma', 'serif']
-    },fontWeight: {
-      light: 300,
-      normal: 400,
-      medium: 500,
-      semibold: 600,
-      bold: 700,
     },
-    
       colors:{
         mainbackground:"#fefdfc",
         background:'#f4f4e2',
@@ -24,10 +18,19 @@ export default {
         subtleText: '#5b6d78',
         boxBackground: '#d6e9f3',
         goalsBoxBackground: '#d6e9f3',
-        highlight: '#fdd9c4',
+        highlight: '#00FFFF',
         noteBackground: '#e3f1fc',
        
       }
+  },
+  keyframes:{
+    slideLeft: {
+      '0%': { transform: 'translateX(0%)' },
+      '100%': { transform: 'translateX(-100%)' },
+    },
+  },
+  animation: {
+    slideLeft: 'slideLeft 40s linear infinite',
   },
   plugins: [],
 }

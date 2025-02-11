@@ -47,7 +47,7 @@ const Home=()=>{
       },
       {
         id:3,
-        name:"About Us",
+        name:"About",
         link:"/about"
       },
     ]
@@ -103,9 +103,9 @@ const Home=()=>{
 <div className=" flex flex-col lg:flex-row lg:justify-between items-center py-4 px-10 mt-12">
   <div className=" lg:w-1/2 w-full flex flex-col gap-3 justify-center p-4 bg-gradient-to-r">
   <div className="absolute lg:top-60 top-24 left-8 w-40 h-16 bg-white opacity-50 blur-3xl"></div>
-    <h1 className="font-myfont  font-semibold text-4xl text-center lg:text-left">
-        Organize your work and life, <br /> with help of your <br /> Daily Planner.</h1>
-        <p className="font-myfont text-xl font-semibold text-gray-600 text-center lg:text-left">
+    <h1 className="font-myfont selection:bg-highlight  selection:text-black font-semibold text-4xl text-center lg:text-left">
+        Organize your work and life, <br /> with help of your <br /> <span className="lg:block md:block  hidden">Daily Planner.</span></h1>
+        <p className="font-myfont text-xl font-semibold text-gray-600 text-center selection:bg-highlight  selection:text-black  lg:text-left">
         Simplify your life & be more productive.
        </p>
     <div className="flex justify-center lg:justify-start lg:mt-5 ">
@@ -133,7 +133,6 @@ const Home=()=>{
 </section>
     )
 }
-
 export default Home;
 
 
