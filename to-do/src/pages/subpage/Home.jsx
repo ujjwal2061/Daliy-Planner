@@ -4,14 +4,17 @@ import { TiThMenu } from "react-icons/ti";
 import { IoIosArrowBack } from "react-icons/io";
 import { TbCone } from "react-icons/tb";
 import { ThemeContext } from "../../theme/ThemeContext";
-import { useContext } from "react";
-const Home=()=>{
+import { useContext} from "react";
+
+const Home=({ scrollToSection, featureRef, contactRef})=>{
   const {theme ,setTheme}=useContext(ThemeContext);
   const [isshow ,setIsshow]=useState(false)
   const [isScrolled,setIsScrolled]=useState(false);
+
   useEffect(()=>{
     const handleScroll=()=>{
       if(window.scrollY>10){
+        setIsshow(false)
         setIsScrolled(true)
       }else{
         setIsScrolled(false)
@@ -21,6 +24,7 @@ const Home=()=>{
       return ()=> window.removeEventListener('scroll',handleScroll);
     
   },[]);
+
     const links=[
       {
         id:1,
@@ -32,24 +36,6 @@ const Home=()=>{
         name: "Signup",
         link:"/signup"
       }
-    ]
-
-    const sectiion=[
-      {
-        id:1,
-        name:"Features",
-        link:"/feature"
-      },
-      {
-        id:2,
-        name:"Pricing",
-        link:"/pricing"
-      },
-      {
-        id:3,
-        name:"About",
-        link:"/about"
-      },
     ]
     const toogle=()=>{
       setIsshow((prevState)=>!prevState)
@@ -67,13 +53,10 @@ const Home=()=>{
         <NavLink to="/" className="text-2xl sm:text-3xl"><TbCone /></NavLink>
           <NavLink to="/" className="ml-1   text-xl sm:hidden font-mono font-semibold md:block hidden ">Daliy Planner</NavLink>
          </div>
-         <div className=" items-center ml-auto   justify-center gap-6  hidden md:flex ">
-           {sectiion.map((items)=>(
-            <NavLink key={items.id} to={items.link} className=" font-semibold text-[17px] rounded-md px-3 hover:px-3 " >{items.name}</NavLink>
-           ))}
-     </div>
-        
-        
+         <div className=" items-center ml-auto  mr-5  justify-center gap-6  hidden md:flex ">
+          <button onClick={() => scrollToSection(featureRef)} className="text-lg font-semibold ">Features</button>
+          <button onClick={() => scrollToSection(contactRef)} className="text-lg font-semibold "> Contact </button>
+        </div>
      <div className="flex  items-center md:gap-6 gap-4">
        <NavLink key={links[0]} to={links[0].link}  className="font-semibold font-mono border-l-2 px-1.5">{links[0].name}</NavLink>
            <spna onClick={ThemeToggle} className="text-2xl cursor-pointer rounded-md" > {theme === "light" ? "☀️" : "🌙"}</spna>
@@ -91,15 +74,15 @@ const Home=()=>{
           </button>
          </div>
     </div>
-      {isshow && (
-         <div className={`${theme=="dark" ?"text-black":"text-black"} absolute w-1/2  border  bg-white text-black md:hidden transition-all duration-300  rounded-md  top-11  z-10 right-0  flex-col ${isshow ?' flex flex-col':"hidden"}`}>
-          {links.map((items)=>(
-            <NavLink key={items.id} to={items.link} className="px-5 py-2 font-semibold font-mono hover:bg-gray-400 hover:text-black" >{items.name}</NavLink>
-            ))}
+      {isshow &&  (
+         <div className={`${theme=="dark" ? "bg-black  text-whitek":" bg-mainbackground  text-black"} absolute w-1/2  border  bg-white text-black md:hidden transition-all duration-300  rounded-md  top-11  z-10 right-0  flex-col 
+         ${isshow ?' flex flex-col gap-4 ':"hidden"}`}>
+          <NavLink key={links[1]} to={links[1].link}  className="font-semibold font-mono hover:bg-slate-400 border-l-2 px-1.5">{links[1].name}</NavLink>
+          <button onClick={() => { scrollToSection(featureRef); setIsshow(false); }} className="block w-full px-5 py-2 text-left hover:bg-gray-200"> Features</button>
+          <button onClick={() => { scrollToSection(contactRef); setIsshow(false); }} className="block w-full px-5 py-2 text-left hover:bg-gray-200">  Contact </button>
           </div>
        )}
   </nav>
-          
 <div className=" flex flex-col lg:flex-row lg:justify-between items-center py-4 px-10 mt-12">
   <div className=" lg:w-1/2 w-full flex flex-col gap-3 justify-center p-4 bg-gradient-to-r">
   <div className="absolute lg:top-60 top-24 left-8 w-40 h-16 bg-white opacity-50 blur-3xl"></div>
@@ -134,12 +117,3 @@ const Home=()=>{
     )
 }
 export default Home;
-
-
-
-
-
-
-
-
-
