@@ -1,52 +1,76 @@
-import { ThemeContext } from "../../theme/ThemeContext";
-import { useContext } from "react";
+import  { ThemeContext } from "../../theme/ThemeContext";
+import  React , { useContext} from "react";
+import {  motion ,Reorder } from "motion/react"
 
-const Feature = () => {
+const Feature =React.forwardRef((props,ref)=>{
   const { theme } = useContext(ThemeContext);
-
+  
+    const images = [
+      { src: "grils.png", text: "Make Your day easier, Stay Focus" },
+      { src: "DDD.png", text: "Why lose time when you can be productive" },
+      { src: "brain.png", text: "Make it simple and StraightForward" },
+    ];
+    const list=[
+      "Work",
+      "Education",
+       "Meeting",
+      "Personal"
+    ]
+    const orderlist=["Work-Out","Complete daily reading assignments","📅Plan for upcoming exams and deadlines","🍎Eat balanced meals & stay hydrated","💼 Work on internships, side projects, or part-time jobs"]
   return (
-<section className={`h-80 overflow-hidden py-6 px-2 w-full flex justify-center ${ theme === "dark" ? "bg-black text-white" : "bg-mainbackground text-black"}`} >
- <div className="flex gap-2   w-[200%] h-full ">
-  <div className="flex gap-9 justify-center min-w-full animate-slideLeft">
-  <div className={`lg:w-[390px] w-[230px] h-[250px] shadow-lg rounded-md flex flex-col px-2 lg:justify-center  justify-start p-4 border border-gray-300 hover:shadow-xl transition-shadow duration-300
-     ${ theme === "dark" ? "bg-gray-900 text-white border-gray-600" : "bg-mainbackground text-black"}`}>
-        <p className="mt-2 ml-2   lg:text-center font-lightfont text-xl text-start py-2">“Make Your day easier,<br />Stay Focus”</p>
-        <img src="grils.png" className={`ml-10 -mt-2 h-32 lg:ml-auto  lg:mr-28   lg:h-auto max-w-full w-[100px] md:w-[120px] md:-mt-3 lg:w-[120px] lg:-mt-10 ${theme === "dark" ? "brightness-90 opacity-100" : ""}`} />
-    </div>
-    <div  className={`lg:w-[400px] w-[230px] h-[250px] shadow-lg rounded-md flex   flex-col px-2 lg:justify-center  justify-start p-4 border border-gray-300 hover:shadow-xl transition-shadow duration-300
-     ${ theme === "dark" ? "bg-gray-900 text-white border-gray-600" : "bg-mainbackground text-black"}`}>
-      <p className="font-lightfont text-xl   lg:text-center  text-start py-2">“why looses time when u <br />can be Productive”</p>
-      <img src="DDD.png" className={`mt-6  ml-9 lg:ml-auto  h-[90px] lg:h-32 lg:mr-28  max-w-full w-[110px] md:w-[130px] lg:w-[150px] ${theme === "dark" ? "brightness-100 opacity-100" : ""}`} />
-   </div>
-   <div className={`lg:w-[400px] w-[230px] h-[250px] shadow-lg rounded-md flex flex-col px-2 lg:justify-center  justify-start p-4 border border-gray-300 hover:shadow-xl transition-shadow duration-300
-     ${ theme === "dark" ? "bg-gray-900 text-white border-gray-600" : "bg-mainbackground text-black"}`}>
-      <p className="font-lightfont text-xl  lg:text-center text-start py-2">“Make it simple and<br />StraightForward”</p>
-      <img src="brain.png" className={`mt-5  ml-12 lg:ml-auto  h-28 lg:h-32 lg:mr-28  max-w-full w-[110px] md:w-[130px] lg:w-[150px] ${theme === "dark" ? "brightness-100 opacity-100" : ""}`} />
-    </div>
-  </div>
-
-  <div className="flex gap-10 justify-center min-w-full animate-slideLeft">
-  <div className={`lg:w-[390px] w-[230px] h-[250px] shadow-lg rounded-md flex flex-col px-2 lg:justify-center  justify-start p-4 border border-gray-300 hover:shadow-xl transition-shadow duration-300
-     ${ theme === "dark" ? "bg-gray-900 text-white border-gray-600" : "bg-mainbackground text-black"}`}>
-        <p className="mt-2 ml-2   lg:text-center font-lightfont text-xl text-start py-2">“Make Your day easier,<br />Stay Focus”</p>
-        <img src="grils.png" className={`ml-10 -mt-2 h-32 lg:ml-auto  lg:mr-28   lg:h-auto max-w-full w-[100px] md:w-[120px] md:-mt-3 lg:w-[120px] lg:-mt-10 ${theme === "dark" ? "brightness-90 opacity-100" : ""}`} />
-    </div>
-    <div  className={`lg:w-[400px] w-[230px] h-[250px] shadow-lg rounded-md flex   flex-col px-2 lg:justify-center  justify-start p-4 border border-gray-300 hover:shadow-xl transition-shadow duration-300
-     ${ theme === "dark" ? "bg-gray-900 text-white border-gray-600" : "bg-mainbackground text-black"}`}>
-      <p className="font-lightfont text-xl   lg:text-center  text-start py-2">“why looses time when u <br />can be Productive”</p>
-      <img src="DDD.png" className={`mt-7  ml-9 lg:ml-auto  h-[90px] lg:h-32 lg:mr-28  max-w-full w-[110px] md:w-[130px] lg:w-[150px] ${theme === "dark" ? "brightness-100 opacity-100" : ""}`} />
-   </div>
-   <div className={`lg:w-[400px] w-[230px] h-[250px] shadow-lg rounded-md flex flex-col px-2 lg:justify-center  justify-start p-4 border border-gray-300 hover:shadow-xl transition-shadow duration-300
-     ${ theme === "dark" ? "bg-gray-900 text-white border-gray-600" : "bg-mainbackground text-black"}`}>
-      <p className="font-lightfont text-xl  lg:text-center text-start py-2">“Make it simple and<br />StraightForward”</p>
-      <img src="brain.png" className={`mt-5  ml-12 lg:ml-auto  h-28 lg:h-32 lg:mr-28  max-w-full w-[110px] md:w-[130px] lg:w-[150px] ${theme === "dark" ? "brightness-100 opacity-100" : ""}`} />
-    </div>
-  </div>
+<motion.section 
 
 
+
+transition={{duration:0.8, ease:"easeInOut", bounce:0.1}}
+ref={ref}  className={` relative -z-10 h-90 overflow-hidden py-6 px-2 w-full flex  flex-col  gap-3 justify-center  items-center ${ theme === "dark" ? "bg-black text-white" : "bg-mainbackground text-black"}`} >
+ <div 
+ className="flex gap-2   w-[200%]  py-2 items-center  ">
+     <motion.div
+        initial={{  opacity:0 ,y:90}} 
+        className="flex gap-10 w-[200%]"
+        whileInView={{opacity:1,y:0}}
+        viewport={{once:false,amount:0.1}}
+       transition={{duration:0.8, ease:"easeInOut", bounce:0}}
+      >
+      {[...images, ...images].map((item, index) => (
+          <motion.div
+          initial={{ x: "-50%", }} 
+          animate={{ x: ["0%", "-100%"] }} 
+          transition={{
+            repeat: Infinity, 
+            duration: 16,
+            ease: "linear" 
+          }}
+            key={index}
+            className={`w-[230px] lg:w-[400px] h-[250px] shadow-lg rounded-md flex flex-col px-2 justify-start p-4 border
+             border-gray-300 hover:shadow-xl transition-shadow duration-300 ${theme==="dark" ?  "bg-gray-900" :"bg-mainbackground"} 
+            `}>
+            <p className="font-lightfont text-xl text-center py-2">{item.text}</p>
+            <img
+              src={item.src}
+              className="h-28 lg:h-32 mx-auto max-w-full"
+              alt="Card"
+            />
+          </motion.div>
+        ))}
+   </motion.div>
  </div>
-</section>
+ <ul className="flex flex-wrap sm:flex-row flex-col gap-6 justify-between px-10 py-4 w-full font-lightfont  text-xl ">
+  {list.map((items,index)=>{
+    return <li key={index} className={` text-center  cursor-pointer  px-10 py-2 rounded-md  ${theme==="dark" ?"bg-gray-900 shadow-md":"bg-white shadow-md"}`}>{items}</li>
+  })}
+  </ul>
+  <Reorder.Group axis="y" values={orderlist} className="bg--pink-">
+  {orderlist.map((item)=>(
+    <Reorder.Item key={item} value={item}  dragConstraints={{ top: 0, bottom: 0 }} >
+      {item}
+    </Reorder.Item>
+  ))}
+  </Reorder.Group>
+
+</motion.section>
   );
-};
+});
 
 export default Feature;
