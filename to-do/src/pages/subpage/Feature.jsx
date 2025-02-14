@@ -1,10 +1,17 @@
 import  { ThemeContext } from "../../theme/ThemeContext";
-import  React , { useContext} from "react";
-import {  motion ,Reorder } from "motion/react"
+import  React , { useContext, useState} from "react";
+import { motion } from "motion/react"
+import { Reorder } from 'motion/react';
 
 const Feature =React.forwardRef((props,ref)=>{
   const { theme } = useContext(ThemeContext);
-  
+  const [items, setItems] = useState([
+    "Work-Out",
+    "Complete daily reading assignments",
+    "📅Plan for upcoming exams and deadlines",
+    "🍎Eat balanced meals & stay hydrated",
+    "💼 Side projects"
+  ]);
     const images = [
       { src: "grils.png", text: "Make Your day easier, Stay Focus" },
       { src: "DDD.png", text: "Why lose time when you can be productive" },
@@ -16,21 +23,18 @@ const Feature =React.forwardRef((props,ref)=>{
        "Meeting",
       "Personal"
     ]
-    const orderlist=["Work-Out","Complete daily reading assignments","📅Plan for upcoming exams and deadlines","🍎Eat balanced meals & stay hydrated","💼 Work on internships, side projects, or part-time jobs"]
+    
   return (
 <motion.section 
-
-
-
 transition={{duration:0.8, ease:"easeInOut", bounce:0.1}}
-ref={ref}  className={` relative -z-10 h-90 overflow-hidden py-6 px-2 w-full flex  flex-col  gap-3 justify-center  items-center ${ theme === "dark" ? "bg-black text-white" : "bg-mainbackground text-black"}`} >
+ref={ref}  className={` relative -z-10 h-90 overflow-hidden py-24 px-2 w-full flex  flex-col  gap-3 justify-center  items-center ${ theme === "dark" ? "bg-black text-white" : "bg-mainbackground text-black"}`} >
  <div 
  className="flex gap-2   w-[200%]  py-2 items-center  ">
      <motion.div
         initial={{  opacity:0 ,y:90}} 
         className="flex gap-10 w-[200%]"
-        whileInView={{opacity:1,y:0}}
-        viewport={{once:false,amount:0.1}}
+        whileInView={{opacity:1,y:0,staggerChildren: 0.1}}
+        viewport={{once:true,amount:0.1,margin:"-100px"}}
        transition={{duration:0.8, ease:"easeInOut", bounce:0}}
       >
       {[...images, ...images].map((item, index) => (
@@ -56,21 +60,21 @@ ref={ref}  className={` relative -z-10 h-90 overflow-hidden py-6 px-2 w-full fle
         ))}
    </motion.div>
  </div>
- <ul className="flex flex-wrap sm:flex-row flex-col gap-6 justify-between px-10 py-4 w-full font-lightfont  text-xl ">
+ <ul className="flex py-20  flex-wrap sm:flex-row flex-col gap-6 justify-between px-10  w-full font-lightfont  text-xl ">
   {list.map((items,index)=>{
-    return <li key={index} className={` text-center  cursor-pointer  px-10 py-2 rounded-md  ${theme==="dark" ?"bg-gray-900 shadow-md":"bg-white shadow-md"}`}>{items}</li>
+    return  <li  key={index} 
+    className={`
+      text-center cursor-pointer px-10 py-2 
+      rounded-full shadow-2xl transition-all duration-300 
+      hover:rounded-none 
+      ${theme==="dark" ?"bg-gray-900 shadow-md":"bg-white shadow-md"}
+    `}>{items}</li>
   })}
   </ul>
-  <Reorder.Group axis="y" values={orderlist} className="bg--pink-">
-  {orderlist.map((item)=>(
-    <Reorder.Item key={item} value={item}  dragConstraints={{ top: 0, bottom: 0 }} >
-      {item}
-    </Reorder.Item>
-  ))}
-  </Reorder.Group>
 
 </motion.section>
   );
 });
 
 export default Feature;
+

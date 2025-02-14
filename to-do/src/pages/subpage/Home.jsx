@@ -44,7 +44,8 @@ const Home=({ scrollToSection, featureRef, contactRef})=>{
     setTheme((prevtheme)=>(prevtheme==="light"?"dark":"light"))
    }
     return(
-<section className={` min-h-screen ${theme === "dark" ? "bg-black  text-white" : "bg-mainbackground text-black"}`}>
+<section
+ className={` min-h-screen ${theme === "dark" ? "bg-black  text-white" : "bg-mainbackground text-black"}`}>
   <nav className={` 
    ${theme==='dark' ? isScrolled ?  
    "bg-zinc-900 backdrop-blur-sm text-white" : "bg-black text-white":isScrolled ? "bg-mainbackground text-black backdrop-blur-sm"
@@ -55,7 +56,7 @@ const Home=({ scrollToSection, featureRef, contactRef})=>{
          </div>
          <div className=" items-center ml-auto  mr-5  justify-center gap-6  hidden md:flex ">
           <button onClick={() => scrollToSection(featureRef)} className="text-lg font-semibold ">Features</button>
-          <button onClick={() => scrollToSection(contactRef)} className="text-lg font-semibold "> Contact </button>
+          <button onClick={() => scrollToSection(contactRef)} className="text-lg font-semibold "> Why it ?</button>
         </div>
      <div className="flex  items-center md:gap-6 gap-4">
        <NavLink key={links[0]} to={links[0].link}  className="font-semibold font-mono border-l-2 px-1.5">{links[0].name}</NavLink>
@@ -78,8 +79,8 @@ const Home=({ scrollToSection, featureRef, contactRef})=>{
          <div className={`${theme=="dark" ? "bg-black  text-whitek":" bg-mainbackground  text-black"} absolute w-1/2  border  bg-white text-black md:hidden transition-all duration-300  rounded-md  top-11  z-10 right-0  flex-col 
          ${isshow ?' flex flex-col gap-4 ':"hidden"}`}>
           <NavLink key={links[1]} to={links[1].link}  className="font-semibold font-mono hover:bg-slate-400 border-l-2 px-1.5">{links[1].name}</NavLink>
-          <button onClick={() => { scrollToSection(featureRef); setIsshow(false); }} className="block w-full px-5 py-2 text-left hover:bg-gray-200"> Features</button>
-          <button onClick={() => { scrollToSection(contactRef); setIsshow(false); }} className="block w-full px-5 py-2 text-left hover:bg-gray-200">  Contact </button>
+          <button onClick={() => { scrollToSection(featureRef); setIsshow(false); }} className="block w-full font-semibold px-5 py-2 text-left hover:bg-gray-200"> Features</button>
+          <button onClick={() => { scrollToSection(contactRef); setIsshow(false); }} className="block w-full px-5 py-2  font-semibold text-left hover:bg-gray-200">Why it ?</button>
           </div>
        )}
   </nav>
