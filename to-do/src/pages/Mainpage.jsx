@@ -20,7 +20,7 @@ const Manipage=()=>{
           <Home  homeref={homeRef} scrollToSection={scrollToSection} featureRef={featureRef} contactRef={contactRef} />
       <Feature ref={featureRef} />
       <Contact ref={contactRef} />
-      <Footer ref={footerRef} />
+      <Footer ref={footerRef} scrollToSection={scrollToSection} homeRef={homeRef} />
       </Screen>
     )
 }
