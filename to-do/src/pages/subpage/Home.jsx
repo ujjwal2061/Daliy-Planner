@@ -56,7 +56,7 @@ const Home=({ scrollToSection, featureRef, contactRef})=>{
          </div>
          <div className=" items-center ml-auto  mr-5  justify-center gap-6  hidden md:flex ">
           <button onClick={() => scrollToSection(featureRef)} className="text-lg font-semibold ">Features</button>
-          <button onClick={() => scrollToSection(contactRef)} className="text-lg font-semibold "> Why it ?</button>
+          <button onClick={() => scrollToSection(contactRef)} className="text-lg font-semibold "> Why us ?</button>
         </div>
      <div className="flex  items-center md:gap-6 gap-4">
        <NavLink key={links[0]} to={links[0].link}  className="font-semibold font-mono border-l-2 px-1.5">{links[0].name}</NavLink>
