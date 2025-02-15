@@ -1,17 +1,10 @@
 import  { ThemeContext } from "../../theme/ThemeContext";
 import  React , { useContext, useState} from "react";
 import { motion } from "motion/react"
-import { Reorder } from 'motion/react';
 
 const Feature =React.forwardRef((props,ref)=>{
   const { theme } = useContext(ThemeContext);
-  const [items, setItems] = useState([
-    "Work-Out",
-    "Complete daily reading assignments",
-    "📅Plan for upcoming exams and deadlines",
-    "🍎Eat balanced meals & stay hydrated",
-    "💼 Side projects"
-  ]);
+
     const images = [
       { src: "grils.png", text: "Make Your day easier, Stay Focus" },
       { src: "DDD.png", text: "Why lose time when you can be productive" },
@@ -27,7 +20,7 @@ const Feature =React.forwardRef((props,ref)=>{
   return (
 <motion.section 
 transition={{duration:0.8, ease:"easeInOut", bounce:0.1}}
-ref={ref}  className={` relative -z-10 h-90 overflow-hidden py-24 px-2 w-full flex  flex-col  gap-3 justify-center  items-center ${ theme === "dark" ? "bg-black text-white" : "bg-mainbackground text-black"}`} >
+ref={ref}  className={` relative -z-10 h-90 overflow-hidden py-16 px-2 w-full flex  flex-col  gap-3 justify-center  items-center ${ theme === "dark" ? "bg-black text-white" : "bg-mainbackground text-black"}`} >
  <div 
  className="flex gap-2   w-[200%]  py-2 items-center  ">
      <motion.div
@@ -60,18 +53,15 @@ ref={ref}  className={` relative -z-10 h-90 overflow-hidden py-24 px-2 w-full fl
         ))}
    </motion.div>
  </div>
- <ul className="flex py-20  flex-wrap sm:flex-row flex-col gap-6 justify-between px-10  w-full font-lightfont  text-xl ">
-  {list.map((items,index)=>{
-    return  <li  key={index} 
-    className={`
-      text-center cursor-pointer px-10 py-2 
-      rounded-full shadow-2xl transition-all duration-300 
-      hover:rounded-none 
-      ${theme==="dark" ?"bg-gray-900 shadow-md":"bg-white shadow-md"}
-    `}>{items}</li>
+ <ul className="flex py-20 justify-center flex-wrap sm:justify-center sm:flex-row flex-col gap-8 px-10 w-full font-light text-xl">
+  {list.map((items, index) => {
+    return (
+      <li  key={index}  className={`mx-auto w-48 text-center   font-semibold font-myfont px-10 py-2 rounded-full shadow-2xl transition-all duration-300 hover:rounded-none ${theme === "dark" ? "bg-gray-900 shadow-md" : "bg-white shadow-md"}`} >
+        {items}
+      </li>
+    );
   })}
-  </ul>
-
+</ul>
 </motion.section>
   );
 });
