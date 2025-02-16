@@ -28,7 +28,7 @@ const Calender=() =>{
   const saveSchedule = () => {
     setlistSchedule(prevList => ({
       ...prevList,
-      // key                                     //value that why we use teh object 
+      // key                                     //value that why we use the object 
       [selecedDate.format('YYYY-MM-DD')]: [...(prevList[selecedDate.format('YYYY-MM-DD')] || []), schedule]
     }));
     setSchedule("");

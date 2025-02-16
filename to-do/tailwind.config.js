@@ -20,18 +20,9 @@ export default {
         goalsBoxBackground: '#d6e9f3',
         highlight: '#00FFFF',
         noteBackground: '#e3f1fc',
-       
       }
   },
-  keyframes:{
-    slideLeft: {
-      '0%': { transform: 'translateX(0%)' },
-      '100%': { transform: 'translateX(-100%)' },
-    },
-  },
-  animation: {
-    slideLeft: 'slideLeft 40s linear infinite',
-  },
+ 
   plugins: [],
 }
 }

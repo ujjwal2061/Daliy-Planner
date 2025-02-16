@@ -14,9 +14,9 @@ const Content=()=>{
   }, [location, navigate]);
 
 return (
- <section className= {` flex  ${theme === "dark" ? "bg-[#18191A] text-white" : "bg-[#F0F2F5] text-black"}`}>
-      <Sidebar  className="border-r-[1px] "  />
-      <main className="flex-1 ml-[120px] overflow-y-auto transition-all duration-300 h-full  flex-row ">
+ <section className= {`  flex   ${theme === "dark" ? "bg-[#18191A] text-white" : "bg-[#F0F2F5] text-black"}`}>
+        <Sidebar />
+      <main className="flex-1 md:ml-[120px]  overflow-y-auto transition-all duration-300 h-full  flex-row ">
       <Outlet />
  </main>
 </section>

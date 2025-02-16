@@ -6,14 +6,14 @@ import {getFirestore} from "firebase/firestore"
 import { onAuthStateChanged ,updateProfile} from "firebase/auth";
 import {getDatabase ,ref,set } from "firebase/database"
 const firebaseConfig = {
-  apiKey: "AIzaSyCbbONxZqKhdqs-lHirZjjGfKrTWIFQ2Ok",
-  authDomain: "chat-app-04.firebaseapp.com",
-  databaseURL: "https://chat-app-04-default-rtdb.firebaseio.com",
-  projectId: "chat-app-04",
-  storageBucket: "chat-app-04.firebasestorage.app",
-  messagingSenderId: "764854985544",
-  appId: "1:764854985544:web:0d1170f6b42e7915d7497d",
-  measurementId: "G-JML9PNW4B9"
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain:import.meta.env.VITE_AUTHDOMAIN_KEY,
+  databaseURL: import.meta.env.VITE_DATABASE_KEY,
+  projectId: import.meta.env.VITE_POJECTID_KEY,
+  storageBucket: import.meta.env.VITE_STORAGEBUCKET_KEY,
+  messagingSenderId:import.meta.env.VITE_MESSAGEID_KEY ,
+  appId: import.meta.env.VITE_APPID_KEY,
+  measurementId:import.meta.env.VITE_MEASUREMENTID_KEY
 };
 
 // Initialize Firebase
