@@ -1,9 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { createContext, useContext, useEffect, useState  } from "react";
 import {getAuth, signInWithEmailAndPassword} from "firebase/auth"
-import { createUserWithEmailAndPassword ,signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword ,signOut,onAuthStateChanged ,updateProfile,GoogleAuthProvider,signInWithPopup } from "firebase/auth";
 import {getFirestore} from "firebase/firestore"
-import { onAuthStateChanged ,updateProfile} from "firebase/auth";
 import {getDatabase ,ref,set } from "firebase/database"
 
 
@@ -24,7 +23,7 @@ const firebaseConfig = {
  const db=getFirestore(app)
  const database=getDatabase(app)
  const FirebaseContext=createContext();
-
+ export const googleprovider=new GoogleAuthProvider();
  export const useFirebase = () => {
   return useContext(FirebaseContext); 
 };
@@ -39,7 +38,7 @@ const firebaseConfig = {
      await updateProfile(user,{
       displayName: userName,
     });
-     await set(ref(database ,`users/${user.uid}`),{  // set the user Detalies in Firebase RealTime database 
+     await set(ref(database ,`users/${user.uid}`),{  // setting  the user Detalies in Firebase RealTime database 
      Name:userName,
      email:user.email
     })
@@ -57,6 +56,8 @@ const firebaseConfig = {
   const Logout=()=>{
      return signOut(auth)
   }
+
+  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
@@ -70,8 +71,20 @@ const firebaseConfig = {
     return () => unsubscribe();
   }, []);
 
+  const value={
+    googleprovider, currentUser,
+    singup ,
+    login ,
+    auth,
+    db,
+    userName ,
+    setUserName ,
+    database ,
+    Logout,
+    setCurrentUser
+  }
     return(
-        <FirebaseContext.Provider value={{   currentUser,singup ,login ,auth,db,userName ,setUserName ,database ,Logout}}>
+        <FirebaseContext.Provider value={value }>
             { children}
         </FirebaseContext.Provider>
     )

@@ -118,29 +118,3 @@ export const todoSlice = createSlice({
 
 // Export reducer
 export default todoSlice.reducer;
-
-
-
-        // const todoCollection = collection(db, "list");
-
-        // const 
-        // const newTodo = { 
-        //     text,
-        //     description,
-        //     category,
-        //     userID: user.uid,
-        //     createdAt: serverTimestamp(),
-        // };
-        
-        // const docRef = await addDoc(collection(todoCollection, newTodo);
-        // const usertask = {
-        //     id: docRef.id,
-        //     text,
-        //     text,
-        //     description,
-        //     category,
-        //     userID: user.uid,
-        //     createdAt: serverTimestamp(),
-        //     ...newTodo,
-        //     createdAt: new Date().toLocaleString(),
-        // });

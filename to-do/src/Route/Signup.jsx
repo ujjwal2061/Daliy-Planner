@@ -3,9 +3,10 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useFirebase } from "../firebase/Firebase";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
+import { signInWithPopup } from "firebase/auth";
 
 const Signup = () => {
-    const { singup } = useFirebase();
+    const { auth ,singup,googleprovider } = useFirebase();
     const navigate = useNavigate();
     const [userName, setUserName] = useState("")
     const [error, setError] = useState("");
@@ -13,6 +14,7 @@ const Signup = () => {
     const [password, setPassword] = useState("");
     const [showPassword ,setShowpassword]=useState(false)
     const [loading ,setLoding]=useState(false)
+
     const handleSignup = async (e) => {
        e.preventDefault();
        // password vaildation checking
@@ -57,7 +59,14 @@ const Signup = () => {
          setShowpassword((prevpassword)=>!prevpassword)
       }
     
-
+const handlegooglelogin=async()=>{
+  try{
+    await signInWithPopup(auth,googleprovider)
+    navigate("/content/workplace");
+  }catch(error){
+    console.log("Erorr at loginwith Google",error)
+  }
+}
     return (
       <section className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
       <div className="px-6 py-8 bg-white rounded-md shadow-lg w-[80%] sm:w-[500px]">
@@ -111,17 +120,23 @@ const Signup = () => {
            {loading ? "Signing up..." : "Signup"}
           </button>
         </div>
-   
-        <div className="mt-4 text-center">
-          <p className="text-sm font-semibold">
-            Already have an account?{' '}
-            <NavLink to="/login" className="font-semibold text-blue-500 hover:underline"> Login  </NavLink>
-          </p>
+        <div className="m-2 flex items-center justify-center space-x-2">
+              <hr className="flex-grow border-t-2 border-gray-400"></hr>
+              <span className="text-gray-600">or</span>
+              <hr className="flex-grow border-t-2 border-gray-400"></hr>
         </div>
-      </div>
-    </section>
-    
-    
+        <div className="mt-2 text-center flex items-center justify-center gap-1">
+          <p className="text-sm font-semibold">
+            Already have an account{' '}
+            <NavLink to="/login" className="font-semibold text-blue-500 hover:underline"> Login ? </NavLink>
+          </p>
+          <button  className="  text-gray-800 hover:underline hover:text-gray-800 font-semibold "  
+          onClick={handlegooglelogin}>Google</button>
+        </div>
+        <div>
+    </div>
+    </div>
+</section>    
     );
 }
 export default Signup;
