@@ -1,5 +1,5 @@
 import AppRoute from './Route/AppRoute';
-import { FirebaseProvider } from './firebase/Firebase';
+import { FirebaseProvider } from '../src/firebase/Firebase';
 import ThemeProvider from './theme/Theme';
  const App=()=>{
   return(

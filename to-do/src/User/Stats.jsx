@@ -114,11 +114,12 @@ const handlebreaketimer=()=>{
   return (
     <section className={` min-h-screen  flex flex-row justify-center items-center ${theme==="dark" ? "bg-[#18191A] text-white":"bg-[#F0F2F5] text-black"}`}>
       <div className=' flex  flex-col justify-center items-center gap-5'>
+      
       <div className='p-2'>
       
     
-        </div>
-        <div className={` flex flex-col  lg:flex-row gap-2   px-2 py-6 rounded-md ${theme==="dark" ? "bg-zinc-600 text-white":"bg-background text-black"}`}>
+      </div>
+        <div className={` flex  flex-col md:flex-row gap-2   px-2 py-6 rounded-md ${theme==="dark" ? "bg-zinc-600 text-white":"bg-background text-black"}`}>
         <audio ref={firstRef} src={first} />
         <select className='text-black bg- px-2 py-1 rounded-md font-semibold font-mono tracking-wide cursor-pointer'
          onChange={(e)=>{
@@ -140,10 +141,9 @@ const handlebreaketimer=()=>{
          <button 
          className=' w-16 text-white bg-gray-900 px-2 py-1 rounded-lg shadow-2xl font-semibold font-jetbrains hover:bg-gray-800 cursor-pointer h-8'
          onClick={restimer}>Reset</button>
-
         </div>
        </div>
-         <div className={`flex flex-row gap-2  px-2 py-6 rounded-md ${theme==="dark" ? "bg-zinc-600 text-white":"bg-background text-black"} `}>
+         <div className={`flex flex-col  md:flex-row gap-2  px-2 py-6 rounded-md ${theme==="dark" ? "bg-zinc-600 text-white":"bg-background text-black"} `}>
        {/*Breake Time*/}
        <select className='text-black bg- px-2 py-1 rounded-md font-semibold font-mono tracking-wide cursor-pointer'    
           onChange={(e)=>{
@@ -156,13 +156,14 @@ const handlebreaketimer=()=>{
        <audio ref={soundRef} src={second} />
        <h2 className='bg-slate-300 px-3 py-1  font-bold rounded-md text-black text-[18px] font-jetbrains tracking-tighter'>Breake:
        <span className=' font-semibold l-1 text-[18px] font-mono'>{Breakchange(breake)}</span></h2>
-       
+       <div className='flex  gap-3 '>
        <button 
       className=' w-16  text-white bg-gray-900 px-2 py-1 rounded-lg shadow-2xl font-semibold font-jetbrains hover:bg-gray-800 cursor-pointer h-8'
        onClick={handlebreaketimer}>{isBreka ? "Pause":"Start"}</button>
        <button 
      className=' w-16  text-white bg-gray-900 px-2 py-1 rounded-lg shadow-2xl font-semibold font-jetbrains hover:bg-gray-800 cursor-pointer h-8'
        onClick={breakeTimerest}>Reset</button>
+       </div>
         </div>
       </div>
   </section>

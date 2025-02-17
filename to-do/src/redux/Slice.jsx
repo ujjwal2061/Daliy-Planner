@@ -1,127 +1,146 @@
-import { createSlice,  createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc, serverTimestamp, } from "firebase/firestore";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc, query, where } from "firebase/firestore";
 
-
-
-// Async Thunks for Firebase Operations /Fecthing the Data From the Firebase 
-export const fetchTodos = createAsyncThunk("todo/fetchTodosFirebase", async (db) => {
-    try{
-        const todoCollection = collection(db, "list");
-        const getList = await getDocs(todoCollection);
-        const todos = getList.docs.map((doc) => {
-            const data = doc.data();
-            const createdAt = data.createdAt && data.createdAt.seconds 
-        ? new Date(data.createdAt.seconds * 1000).toLocaleString()
-        : new Date().toLocaleString();
-            return {
-                id: doc.id,
-                ...data,
-                createdAt
-            }
-        });
-        return todos;
-    }catch(error){
-        console.log(error)
-    }
-});
-// Adding the Todo to Firebase
-// // this Function were i  add the new task by using the ... operater 
-// where it create the new  array of the each  object  and add to the firebase Db
-export const addTodoFirebase = createAsyncThunk("todo/addToFirebase", async ({db ,text ,description, category,}) => {
-    try{
-        const todoCollection = collection(db, "list");
-        const newTodo = { 
-            text, 
-            description,
-            category,
-            createdAt:serverTimestamp()
-        };
-        const docRef = await addDoc(todoCollection, newTodo
-        );
-        return { id: docRef.id, ...newTodo,createdAt: new Date().toLocaleString() };
-    }catch(error){
-        throw new Error(error.message)
-    }
-});
-
-// Delete the Todo from Firebase
-export const deleteTodoFirebase = createAsyncThunk("todo/deleteTodo", 
-    async ({id ,db}) => {
-        try{
-            const docRef = doc(db, "list", id);
-            await deleteDoc(docRef);
-            return id;
-        }catch(error){
-         throw new Error(error.message)
+// Function to Fecthing the data from the database of the current user login
+export const fetchTodos = createAsyncThunk("todo/fetchTodosFirebase", async ({ db, user }) => {
+    try {
+        if (!user || !user.uid) {
+            console.log("Can't get access");
+            return []; 
         }
+        const todoCollection = collection(db, "list");
+        const q = query(todoCollection, where("userID", "==", user.uid)); 
+        const querySnapshot = await getDocs(q);
+        
+        const usertasklist = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+            text: doc.data().text,        
+            description: doc.data().description,
+            category: doc.data().category,
+            createdAt: new Date().toLocaleDateString(),
+        }));
+        return usertasklist; 
+    } catch (error) {
+        throw error;
+    }
 });
 
-// Update the Todo list inthis i am Acces theh Firebasee Db and where user can upadatt the there Enter 
-// by using the CreatAsyncThuck 
-export const updateTodoFirebase = createAsyncThunk("todo/updateFirebaseTodo", 
-    async (db ,id ,text,description,category) => {
+// Function to Add the task list at the database 
+export const addTodoFirebase = createAsyncThunk("todo/addToFirebase", 
+    async ({ db, text, description, category, user }) => {
         try{
-            const docRef = doc(db, "list", id);
-            await updateDoc(docRef);
-            return { id  ,text,description ,category};
-        }catch(error){
-            throw new Error (error.message)
-       }
+
+            if (!user || !user.uid) {
+                throw new Error("User not authenticated");
+            }
+            const docRef=await addDoc(collection(db,"list"),{
+                text,
+                description,
+                category,
+                userID:user.uid,
+                createdAt: new Date().toLocaleDateString(),
+            })        
+            return ({id:docRef.id ,text,description,category,userID:user.uid,createdAt:new Date().toLocaleDateString()});
+       
+       }catch(error){
+        throw new Error(error.message);
+        }
+    })
+// Function to delete the  task from the data base 
+export const deleteTodoFirebase = createAsyncThunk("todo/deleteTodo", async ({ id, db }) => {
+    try {
+        const docRef = doc(db, "list", id);
+        await deleteDoc(docRef);
+        return id; 
+    } catch (error) {
+        throw new Error(error.message);
+    }
 });
+// Function to upadata the task list if user want to change anything 
+export const updateTodoFirebase = createAsyncThunk("todo/updateFirebaseTodo", async ({ db, id, text, description, category }) => {
+    try {
+        const docRef = doc(db, "list", id);
+        await updateDoc(docRef, { text, description, category }); 
+        return { id, text, description, category }; 
+    } catch (error) {
+        throw new Error(error.message);
+    }
+});
+
 
 export const todoSlice = createSlice({
     name: "todo",
     initialState: {
-        todos: [], // all Todo
-        shortTermtodos:[], // short term goal todo list 
-        longtermtodos:[], // long term goal todo list
+        todos: [],
+        shortTermtodos: [],
+        longtermtodos: [],
         status: "idle",
-        error: null
+        error: null,
     },
-    reducers:{},
-    // this bulider part where is Return the the promise to check the task are Fullifilled or not 
+    reducers: {},
     extraReducers: (builder) => {
         builder
           .addCase(fetchTodos.pending, (state) => {
-            state.status = "loading";
+              state.status = "loading";
           })
           .addCase(fetchTodos.fulfilled, (state, action) => {
-            const allTodos=action.payload;
-            state.todos=[];
-            state.shortTermtodos=[];
-            state.longtermtodos=[];
-            allTodos.forEach(todo=>{
-             if (todo.category === "all-goal") {
-              state.todos.push(todo);
-             } else if (todo.category === "short-term") {
-             state.shortTermtodos.push(todo);
-             } else if (todo.category === "long-term") {
-              state.longtermtodos.push(todo);
-               }
-            })
-          })
+            state.status = "succeeded";
+            const allTodos = action.payload || []; 
+        
+            state.todos = allTodos.filter(todo => todo.category === "all-goal");
+            state.shortTermtodos = allTodos.filter(todo => todo.category === "short-term");
+            state.longtermtodos = allTodos.filter(todo => todo.category === "long-term");
+        })
+        
           .addCase(fetchTodos.rejected, (state, action) => {
-            state.status = "failed";
-            state.error = action.error.message;
+              state.status = "failed";
+              state.error = action.error.message;
           })
           .addCase(addTodoFirebase.fulfilled, (state, action) => {
-            // state.todos.push(action.payload);
-            if(action.payload.category==="all-goal"){
-                state.todos.push(newTodo)
-            }else if(action.payload.category==="short-term"){
-                state.shortTermtodos.push(newTodo)
-            }else if(action.payload,category==="long-term"){
-                state.longtermtodos.push(newTodo)
-            }
+              const newTodo = action.payload;
+              if (newTodo.category === "all-goal") {
+                  state.todos.push(newTodo);
+              } else if (newTodo.category === "short-term") {
+                  state.shortTermtodos.push(newTodo);
+              } else if (newTodo.category === "long-term") {
+                  state.longtermtodos.push(newTodo);
+              }
           })
           .addCase(deleteTodoFirebase.fulfilled, (state, action) => {
-            state.todos = state.todos.filter((todo) => todo.id !== action.payload);
-            state.shortTermtodos=state.shortTermtodos.filter(todo.id!==action.payload)
-            state.longtermtodos=state.longtermtodos.filter(todo.id!==action.payload)
-          })
-          
+              const idToDelete = action.payload;
+              state.todos = state.todos.filter(todo => todo.id !== idToDelete);
+              state.shortTermtodos = state.shortTermtodos.filter(todo => todo.id !== idToDelete);
+              state.longtermtodos = state.longtermtodos.filter(todo => todo.id !== idToDelete);
+          });
       },
-    });
-    
-    export default todoSlice.reducer;
+});
 
+// Export reducer
+export default todoSlice.reducer;
+
+
+
+        // const todoCollection = collection(db, "list");
+
+        // const 
+        // const newTodo = { 
+        //     text,
+        //     description,
+        //     category,
+        //     userID: user.uid,
+        //     createdAt: serverTimestamp(),
+        // };
+        
+        // const docRef = await addDoc(collection(todoCollection, newTodo);
+        // const usertask = {
+        //     id: docRef.id,
+        //     text,
+        //     text,
+        //     description,
+        //     category,
+        //     userID: user.uid,
+        //     createdAt: serverTimestamp(),
+        //     ...newTodo,
+        //     createdAt: new Date().toLocaleString(),
+        // });
