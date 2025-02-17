@@ -5,6 +5,8 @@ import { createUserWithEmailAndPassword ,signOut } from "firebase/auth";
 import {getFirestore} from "firebase/firestore"
 import { onAuthStateChanged ,updateProfile} from "firebase/auth";
 import {getDatabase ,ref,set } from "firebase/database"
+
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
   authDomain:import.meta.env.VITE_AUTHDOMAIN_KEY,
@@ -22,11 +24,13 @@ const firebaseConfig = {
  const db=getFirestore(app)
  const database=getDatabase(app)
  const FirebaseContext=createContext();
-  
-export const useFirebase=()=>useContext(FirebaseContext); // use this as a Conyext API 
 
+ export const useFirebase = () => {
+  return useContext(FirebaseContext); 
+};
  export const FirebaseProvider=({children})=>{
   const [userName ,setUserName]=useState("")
+  const [currentUser, setCurrentUser] = useState(null);
 
   const singup = async (email, password ,userName) => {
     try{
@@ -53,19 +57,22 @@ export const useFirebase=()=>useContext(FirebaseContext); // use this as a Conye
   const Logout=()=>{
      return signOut(auth)
   }
-  useEffect(()=>{
-    const unsubscribe=onAuthStateChanged(auth,(user)=>{
-      if(user){
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      if (user) {
         setUserName(user.displayName || "");
-      }else{
-        setUserName("")
-      } 
-    })
-   return ()=>unsubscribe;
-  },[])
+      } else {
+        setUserName("");
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
     return(
-        <FirebaseContext.Provider value={{singup ,login ,auth,db,userName ,setUserName ,database ,Logout}}>
-            {children}
+        <FirebaseContext.Provider value={{   currentUser,singup ,login ,auth,db,userName ,setUserName ,database ,Logout}}>
+            { children}
         </FirebaseContext.Provider>
     )
  }
