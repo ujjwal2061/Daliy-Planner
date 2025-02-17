@@ -11,9 +11,10 @@ const Workplace = () => {
   const shortTermtodos = useSelector((state) => state.todo.shortTermtodos);
   const longtermtodos = useSelector((state) => state.todo.longtermtodos);
 
-  const { db } = useFirebase();
+   const { db, currentUser } = useFirebase();
   const [editID, setEditId] = useState(false);
   const [task, setTasks] = useState({ text: "", description: "", category: "all-goal" });
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,30 +25,38 @@ const Workplace = () => {
   };
 
   const dispatch = useDispatch();
+ 
   useEffect(() => {
-    if (db) {
-      dispatch(fetchTodos(db));
+    if (currentUser && db) {
+      dispatch(fetchTodos({ db, user: currentUser }));
     }
-  }, [dispatch, db]);
+  }, [, db, dispatch]);
+;
 
-  const handleAdd =() => {
+  const handleAdd = () => {
     if (editID) {
-      dispatch(updateTodoFirebase({ db, id: editID, ...task }));
-      setEditId(false);
+        dispatch(updateTodoFirebase({ db, id: editID, ...task })).then(() => {
+            dispatch(fetchTodos({db, user:currentUser}));
+        });
+        setEditId(false);
     } else {
-       dispatch(addTodoFirebase({ db, ...task }));
-      setTasks({ text: "", description: "", category: "" ,});
+        dispatch(addTodoFirebase({   user:currentUser, db, ...task })).then(() => {
+            dispatch(fetchTodos({ db, user:currentUser}));
+        });
     }
-    dispatch(fetchTodos(db))
-    setTasks({ text: "", description: "", category: "" });
-  };
+    setTasks({ text: "", description: "", category: "all-goal" });
+};
 
-  const deleteTask = (id) => {
-    dispatch(deleteTodoFirebase({ db, id }));
-    dispatch(fetchTodos(db));
-  };
+const deleteTask = (id) => {
+  if (!currentUser)   return;
+    dispatch(deleteTodoFirebase({ db, id })).then(() => {
+        dispatch(fetchTodos({ db, user:currentUser}));
+    });
+};
+ 
 
   const editTask = (todo) => {
+    if(!currentUser) return
     setTasks({ text: todo.text, description: todo.description, category: todo.category|| "all-gaol" });
     setEditId(todo.id);
   };
@@ -123,7 +132,7 @@ const Workplace = () => {
               <p>{todo.description}</p>
              
               <div className="flex justify-between mt-2">
-                <button onClick={() => editTask(todo)} className="bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700">
+                <button onClick={() => editTask(todo.id)} className="bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700">
                   Edit
                 </button>
                 <button onClick={() => deleteTask(todo.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">
