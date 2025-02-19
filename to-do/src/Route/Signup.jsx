@@ -4,9 +4,9 @@ import { useFirebase } from "../firebase/Firebase";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { signInWithPopup } from "firebase/auth";
-
+import  {set ,ref} from "firebase/database"
 const Signup = () => {
-    const { auth ,singup,googleprovider } = useFirebase();
+    const { auth ,singup,googleprovider,database } = useFirebase();
     const navigate = useNavigate();
     const [userName, setUserName] = useState("")
     const [error, setError] = useState("");
@@ -58,10 +58,20 @@ const Signup = () => {
          e.preventDefault()
          setShowpassword((prevpassword)=>!prevpassword)
       }
-    
+    // login by gogle and store at the Realtime Database
 const handlegooglelogin=async()=>{
   try{
-    await signInWithPopup(auth,googleprovider)
+    const result= await signInWithPopup(auth,googleprovider)
+    const user=result.user
+    const useRref=ref(database,`users/${user.uid}`)
+    await set(useRref,{
+      uid:user.uid,
+      Name:user.displayName || "--",
+      email:user.email,
+      profilePic:user.photoURL ||null,
+      createdAt:new Date().toLocaleString()
+    })
+    console.log("User signed:", user.displayName);
     navigate("/content/workplace");
   }catch(error){
     console.log("Erorr at loginwith Google",error)
