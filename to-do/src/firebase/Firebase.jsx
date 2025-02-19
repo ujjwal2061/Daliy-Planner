@@ -24,6 +24,7 @@ const firebaseConfig = {
  const database=getDatabase(app)
  const FirebaseContext=createContext();
  export const googleprovider=new GoogleAuthProvider();
+ 
  export const useFirebase = () => {
   return useContext(FirebaseContext); 
 };
@@ -40,7 +41,8 @@ const firebaseConfig = {
     });
      await set(ref(database ,`users/${user.uid}`),{  // setting  the user Detalies in Firebase RealTime database 
      Name:userName,
-     email:user.email
+     email:user.email,
+     createdAt:new Date().toLocaleString()
     })
      setUserName(userName);
      const userDetails={...user, Name:userName ,email:user.email};

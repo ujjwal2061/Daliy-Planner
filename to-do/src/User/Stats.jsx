@@ -15,7 +15,7 @@ const Stats=()=>{
   const [startTime,setstartTime]=useState(45*60) // convert the 25 into min  
   const [isStart,setISStart]=useState(false)
   const [breake ,setbreak]=useState(5*60) // convert tha the 5 into 5 min
-  const [isBreka ,setIsbreake]=useState(false)
+  const [isBreka ,setIsbreake]=useState(false) 
   const timeRef=useRef(null)
   const breakRef=useRef(null)
   const soundRef=useRef(null)
