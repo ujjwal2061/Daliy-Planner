@@ -40,21 +40,21 @@ const Calender=() =>{
   return newlist
     })
   }
-  console.log(listSchedule)
+
     return (
-    <section className={` min-h-screen  ${theme==="dark" ? "bg-[#18191A] text-white":"bg-[#F0F2F5] text-black"}`}>
+    <section className={`   min-h-screen  ${theme==="dark" ? "bg-[#18191A] text-white":"bg-[#F0F2F5] text-black"}`}>
       <div className='w-full flex flex-col  items-center'>
       <div className='md:w-[50%]  flex flex-col gap-7  items-center  justify-center mt-10 '>
-        <div className={` border-2 px-2 py-10 w-96 items-center justify-center   shadow-md rounded-lg ${theme === "dark" ? " bg-[#242526] text-white" : "bg-boxBackground text-black"}`}>
-        <div className='flex flex-row justify-between border-2 px-2 py-1  rounded-md'>
+        <div className={` border-2 px-2 py-10 w-[80%]  items-center justify-center   shadow-md rounded-lg ${theme === "dark" ? " bg-[#242526] text-white" : "bg-boxBackground text-black"}`}>
+        <div className={`h-16 flex flex-row  items-center justify-between border-2 px-2 py-1  rounded-md ${theme==="dark" ? "bg-gray-800":"bg-gray-900 text-white"}`}>
+             <button><GrFormPrevious className='w-5 h-5 cursor-pointer' onClick={previousmonth}/>Previous</button>
           <h1 className='font-bold text-sm'>{months[today.month()]}<span className='font-semibold px-1 text-sm'>{today.year()}</span></h1>
-            <div className='flex items-center gap-3 ' > 
-              <GrFormPrevious className='w-5 h-5 cursor-pointer' onClick={previousmonth}/>
+           
               <h1  className="cursor-pointer  font-mono" onClick={()=>setToady(currentDate)}>Today</h1>
-              <GrFormNext className='w-5 h-5 cursor-pointer' onClick={nextmonths} />
-            </div>
+             <button>Next</button><GrFormNext className='w-5 h-5 cursor-pointer' onClick={nextmonths} />
+          
           </div>
-      <div className='grid grid-cols-7  t '>
+      <div className='grid grid-cols-7   '>
         {days.map((day,index)=>(
           <h1 key={index} className='text-bold font-mono text-[19px] h-12 grid place-content-center font-semibold text-sm'>{day}</h1>
         ))}
@@ -74,7 +74,7 @@ const Calender=() =>{
         })}
       </div>
      </div>
-     <div className='bg-purple-600 w-full py-2 px-2 rounded-md  flex flex-col  items-center'>
+     <div className={` w-full py-2 px-2 rounded-md  flex flex-col  items-center ${theme==="dark" ?"bg-gray-900" :"bg-white shadow-md rounded-md"}` }>
       <h1 className='text-[18px] font-semibold tracking-tighter mr-auto '>Schedule for {selecedDate.toDate().toDateString()}</h1> 
       <input type='text'  value={schedule} onChange={handleScheduleInput}
         className='w-full px-2 py-1 rounded-md mt-2 text-black' placeholder='Add your schedule here...'  />

@@ -46,7 +46,7 @@ export default function Sidebar({className}) {
     <div className={`h-12 md:fixed   md:top-0 md:left-0 md:h-full md:w-auto w-full
              fixed bottom-0 flex  flex-row left-0 
              transition-all ease-in-out duration-300 
-            ${sidebarShow ? "w-18" : ""}
+            ${sidebarShow ? "w-16" : ""}
              ${theme ==="dark" ?"bg-zinc-900 text-white" : "bg-white text-black"}
              border-t md:border-r border-gray-200 dark:border-gray-700
              z-50

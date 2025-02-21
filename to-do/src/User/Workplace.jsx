@@ -62,7 +62,7 @@ const deleteTask = (id) => {
   };
 
   return (
-    <div className={`p-4 min-h-screen flex flex-col items-center ${theme === "dark" ? "bg-[#18191A] text-black" : "bg-[#F0F2F5] text-black"}`}>
+    <div className={` p-4 min-h-screen flex flex-col items-center ${theme === "dark" ? "bg-[#18191A] text-black" : "bg-[#F0F2F5] text-black"}`}>
       <div className={` w-full flex flex-col  items-center px-2 py-1 rounded-md ${theme === "dark" ? " bg-[#242526] text-white" : "bg-boxBackground text-black"}`}>
       <div className="w-1/2 max-w-3xl text-center">
         <h1 className="text-3xl font-semibold font-mono   tracking-tighter  p-3 rounded-md">Daily Planner</h1>
