@@ -35,7 +35,7 @@ const Workplace = () => {
     if (currentUser && db) {
       dispatch(fetchTodos({ db, user: currentUser }));
     }
-    // localStorage.getItem('Summary')
+   
   }, [currentUser, db, dispatch]);
 ;
 useEffect(() => {
@@ -56,9 +56,9 @@ useEffect(() => {
 }, [aiSummary])
 
 useEffect(() => {
-  const storedSummary = localStorage.getItem("aiSummary");
+  const storedSummary = localStorage.getItem("Summary");
   if (storedSummary) {
-    setaiSummary(storedSummary);
+    setaiSummary(storedSummary.replace(/[#/***]/g," "));
   }
 }, []);
   const handleAdd = () => {
@@ -218,7 +218,7 @@ const deleteTask = (id) => {
        hover:scale-105 hover:bg-gradient-to-l hover:from-slate-600   hover:via-slate-500 hover:to-slate-500
        "> AI summary For task<FaRegPaperPlane  className="text-gray-950"/></button>
        </div>
-       <div className={`w-full max-w-3xl mt-6 p-4 rounded-lg shadow-lg border ${theme==="dark"?"bg-slate-600 text-slate-50":"bg-white text-black shadow-xl"}`}>
+       <div className={`w-full max-w-3xl mt-6 p-4 rounded-lg shadow-lg border ${theme==="dark"?"bg-zinc-800 shadow-2xl text-slate-50":"bg-white text-black shadow-xl"}`}>
   <h2 className="text-xl font-bold text-center underline mb-4">📝 AI Summary</h2>
     {error && <p>Can't Generate Summary !</p>}
   {isLodaing ? (
