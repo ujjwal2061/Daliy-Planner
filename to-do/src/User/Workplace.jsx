@@ -4,18 +4,24 @@ import { useEffect, useState, useContext } from "react";
 import { ThemeContext } from "../theme/ThemeContext";
 import { useFirebase } from "../firebase/Firebase";
 import { IoMdAdd } from "react-icons/io";
+import { FaRegPaperPlane } from "react-icons/fa";
+import { getOpenaiSummary } from "../OpenAI/Openai";
 
 const Workplace = () => {
   const { theme } = useContext(ThemeContext);
   const todos = useSelector((state) => state.todo.todos);
   const shortTermtodos = useSelector((state) => state.todo.shortTermtodos);
   const longtermtodos = useSelector((state) => state.todo.longtermtodos);
+  const dispatch = useDispatch();
 
-   const { db, currentUser } = useFirebase();
+  const { db, currentUser } = useFirebase();
   const [editID, setEditId] = useState(false);
   const [task, setTasks] = useState({ text: "", description: "", category: "all-goal" });
-
-
+  const [aiSummary,setaiSummary]=useState("")
+  const [isLodaing,setLoding]=useState(false)
+  const[error,setError]=useState(false) 
+  const [displayedText, setDisplayedText] = useState("");
+  const speed = 20;
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTasks((prevTask) => ({
@@ -24,15 +30,37 @@ const Workplace = () => {
     }));
   };
 
-  const dispatch = useDispatch();
  
   useEffect(() => {
     if (currentUser && db) {
       dispatch(fetchTodos({ db, user: currentUser }));
     }
-  }, [, db, dispatch]);
+    // localStorage.getItem('Summary')
+  }, [currentUser, db, dispatch]);
 ;
+useEffect(() => {
+  if (aiSummary) {
+    setDisplayedText("");
+    let index = 0;
+    const interval = setInterval(() => {
+      if (index < aiSummary.length) {
+        setDisplayedText((prev) => prev + aiSummary[index]);
+        index++;
+      } else {
+        clearInterval(interval)
+      }
+    }, speed);
+    return (()=>clearInterval(interval))
+  }
+ 
+}, [aiSummary])
 
+useEffect(() => {
+  const storedSummary = localStorage.getItem("aiSummary");
+  if (storedSummary) {
+    setaiSummary(storedSummary);
+  }
+}, []);
   const handleAdd = () => {
     if (editID) {
         dispatch(updateTodoFirebase({ db, id: editID, ...task })).then(() => {
@@ -61,6 +89,25 @@ const deleteTask = (id) => {
     setEditId(todo.id);
   };
 
+
+ // function to get the Summary of the All todos
+
+ const handlesummary=async()=>{
+  try{
+    setLoding(true)
+    const summary=await getOpenaiSummary(
+      todos,
+      shortTermtodos,
+      longtermtodos
+    );
+    setaiSummary(summary.replace(/[#/***]/g," "));
+    localStorage.setItem("Summary",summary)
+  }catch(err){
+      setError(true)
+  } finally {
+    setLoding(false);
+  }
+ }
   return (
     <div className={` p-4 min-h-screen flex flex-col items-center ${theme === "dark" ? "bg-[#18191A] text-black" : "bg-[#F0F2F5] text-black"}`}>
       <div className={` w-full flex flex-col  items-center px-2 py-1 rounded-md ${theme === "dark" ? " bg-[#242526] text-white" : "bg-boxBackground text-black"}`}>
@@ -164,6 +211,25 @@ const deleteTask = (id) => {
           ))}
         </div>
       </div>
+      {/*Button for AI summarry */}
+       <div className=" m-2  py-2 px-1 w-full font-mono ">
+       <button onClick={handlesummary} 
+       className=" flex h-8 items-center  gap-2 bg-gradient-to-l from-slate-500 via-slate-300 to-slate-300 px-3 rounded-lg text-[15px]  transition-all duration-500 ease-in-out 
+       hover:scale-105 hover:bg-gradient-to-l hover:from-slate-600   hover:via-slate-500 hover:to-slate-500
+       "> AI summary For task<FaRegPaperPlane  className="text-gray-950"/></button>
+       </div>
+       <div className={`w-full max-w-3xl mt-6 p-4 rounded-lg shadow-lg border ${theme==="dark"?"bg-slate-600 text-slate-50":"bg-white text-black shadow-xl"}`}>
+  <h2 className="text-xl font-bold text-center underline mb-4">📝 AI Summary</h2>
+    {error && <p>Can't Generate Summary !</p>}
+  {isLodaing ? (
+    <p className="text-center text-gray-500">Generating summary...</p>
+  ) : (
+    <div className="whitespace-pre-line text-[15px] leading-relaxed font-serif">
+      {displayedText}
+    </div>
+  )}
+</div>
+
     </div>
   );
 };

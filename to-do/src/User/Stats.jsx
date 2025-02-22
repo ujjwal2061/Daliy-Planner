@@ -185,16 +185,16 @@ useEffect(() => {
     <section className={` min-h-screen  flex flex-row justify-center items-center ${theme==="dark" ? "bg-[#18191A] text-white":"bg-[#F0F2F5] text-black"}`}>
       <div className=' flex  flex-col  w-full  h-[700px] items-center gap-4'>
       <div className=" w-full h-32 p-2 flex flex-col gap-3 items-center justify-center md:justify-end ">
-          {/* <div className='p-2 flex gap-2 '>
+          <div className='p-2 flex gap-2 '>
           <input type="search" placeholder='Invite your buddy' value={name} onChange={(e)=>setEmail(e.target.value)}  className='px-3 py-1  text-black rounded-md font-myfont '/>
             <button  
             onClick={()=>searchUserByName(name)}
             className=' text-white bg-gradient-to-r from-slate-900  w-20  via-gray-800 to-blue-500 px-3 rounded-lg transition-all ease-in-out  duration-200 py-1  
             font-myfont hover:bg-gradient-to-r hover:from-blue-500  hover:text-black hover:via-blue-300 hover:to-blue-200 hover:scale-105 hover:shadow-lg'>Join</button>
-          </div> */}
-          {/* <div className="bg-slate-300 px-3 py-1 shadow-lg text-black  font-myfont rounded-lg">
+          </div> 
+           <div className="bg-slate-300 px-3 py-1 shadow-lg text-black  font-myfont rounded-lg">
             Current Time: {`${spentime.hour}:${spentime.minute}`}...{' '}
-          </div> */}
+          </div> 
       </div>
    
          <div className='flex flex-row gap-2 p-2'>

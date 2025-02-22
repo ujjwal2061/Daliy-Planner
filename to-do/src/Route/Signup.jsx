@@ -71,10 +71,10 @@ const handlegooglelogin=async()=>{
       profilePic:user.photoURL ||null,
       createdAt:new Date().toLocaleString()
     })
-    console.log("User signed:", user.displayName);
+    
     navigate("/content/workplace");
   }catch(error){
-    console.log("Erorr at loginwith Google",error)
+    throw(error)
   }
 }
     return (

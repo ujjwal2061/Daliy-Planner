@@ -17,8 +17,8 @@ const hanvdleExpand=(index)=>{
   return (
     <section 
       ref={ref} 
-      className={` relative z-0 px-4 py-11 ${theme === 'dark' ? "bg-black text-white" : "bg-white text-black"}`} >
- <div className={`px-3 py-5 rounded-md max-w-5xl mx-auto text-center md:text-left ${theme === 'dark' ? "bg-gradient-to-r from-black via-gray-900  to-black shadow-xl text-white" : " shadow-2xl text-black"}`}>
+      className={`  px-4 ${theme === 'dark' ? "bg-black text-white" : "bg-white text-black"}`} >
+ <div className={`px-3 py-5 rounded-md max-w-5xl mx-auto text-center md:text-left ${theme === 'dark' ? "bg-gradient-to-r from-black via-gray-900  to-black  text-white" : " shadow-2xl text-black"}`}>
         <h1 className="  px-3 md:px-6 font-myfont underline  selection:bg-highlight selection:text-black 
           font-semibold text-2xl md:text-3xl lg:text-4xl">
           Why Use the Daily Planner?
