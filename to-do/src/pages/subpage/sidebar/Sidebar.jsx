@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
 import { IoIosArrowBack } from "react-icons/io";
 import { FiArrowRight } from "react-icons/fi";
@@ -7,6 +7,7 @@ import { ThemeContext } from "../../../theme/ThemeContext"
 import { IoSunny } from "react-icons/io5";
 import { LuSunMoon } from "react-icons/lu";
 export default function Sidebar({className}) {
+  const [isScrolled,setScrolled]=useState(false)
    const {theme ,setTheme}=useContext(ThemeContext);
     const links=[
       {
@@ -41,7 +42,19 @@ export default function Sidebar({className}) {
     }
     const ThemeToggle=()=>{
       setTheme((prevtheme)=>(prevtheme==="light"?"dark":"light"))
+    
      }
+     useEffect(() => {
+      const handleScroll = () => {
+        if (window.innerWidth < 768) { 
+          setScrolled(window.scrollY > 50); 
+        }
+      };
+       localStorage.getItem('usertheme')
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+  
   return (
     <div className={`h-12 md:fixed   md:top-0 md:left-0 md:h-full md:w-auto w-full
              fixed bottom-0 flex  flex-row left-0 
@@ -50,7 +63,7 @@ export default function Sidebar({className}) {
              ${theme ==="dark" ?"bg-zinc-900 text-white" : "bg-white text-black"}
              border-t md:border-r border-gray-200 dark:border-gray-700
              z-50
-           `}>
+             ${isScrolled ? "hidden md:flex" : "flex"}`}>
    
    <button  onClick={toggle}
        className={`absolute text-xl  hidden md:block px-2  rounded-lg sm:${sidebarShow} `}  >
