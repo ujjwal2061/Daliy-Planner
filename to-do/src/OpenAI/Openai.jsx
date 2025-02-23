@@ -34,7 +34,8 @@ export const getOpenaiSummary=async(todos ,shortTermtodos,longtermtodos)=>{
   **4. Potential Pitfalls**
   - [Risk 1]
   - [Risk 2]
-        Use bold headers for sections and bullet points for actions. Avoid markdown except for **bold**.
+    Use bold headers for sections and bullet points for actions. Avoid markdown except for **bold**.
+    Sources  for the Study materails give the some resources For the Study Plane
     `;
        // Gemini API call
     const response = await fetch(`${GEMINILINK}?key=${APIKEY}`, {
@@ -52,11 +53,44 @@ export const getOpenaiSummary=async(todos ,shortTermtodos,longtermtodos)=>{
     if (!response.ok) {
         throw new Error(`API Error: ${response.status} ${response.statusText}`);
       }
-        console.log("Raw response:", response);
-        const data = await response.json();return data.candidates[0].content.parts[0].text;
+        const data = await response.json();
+        return data.candidates[0].content.parts[0].text;
     }catch(error){
         console.error('Error generating summary:', error.response ? error.response.data : error.message);
         throw error;
     }
 
 } 
+export const chatwithsummary=async (userinput ,summary)=>{
+  try{
+
+ const prompt=`
+   ${summary}
+    # Make the better summary from the Previous Summary given #
+    ** Try to give simple and Easy Summary so user can feel Easy to achevie it ** 
+   ${JSON.stringify(userinput)}
+   ** Look at the user input then gice then accoeding to the need provide mor sources for the Study Materials and Money Svinf and Other what user input **
+  
+   
+ `
+ const response=await fetch(`${GEMINILINK}?key=${APIKEY}`,{
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    contents: [{
+      parts: [{ 
+        text: prompt 
+      }]
+    }]
+  })
+}); 
+if (!response.ok) {
+  throw new Error(`API Error: ${response.status} ${response.statusText}`);
+}
+const data = await response.json();
+ return data.candidates[0].content.parts[0].text;
+  }catch(error){
+    console.log("Can't make it",error)
+  }
+
+}

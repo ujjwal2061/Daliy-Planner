@@ -5,7 +5,7 @@ import { ThemeContext } from "../theme/ThemeContext";
 import { useFirebase } from "../firebase/Firebase";
 import { IoMdAdd } from "react-icons/io";
 import { FaRegPaperPlane } from "react-icons/fa";
-import { getOpenaiSummary } from "../OpenAI/Openai";
+import { getOpenaiSummary,chatwithsummary } from "../OpenAI/Openai";
 
 const Workplace = () => {
   const { theme } = useContext(ThemeContext);
@@ -21,6 +21,8 @@ const Workplace = () => {
   const [isLodaing,setLoding]=useState(false)
   const[error,setError]=useState(false) 
   const [displayedText, setDisplayedText] = useState("");
+   const [chatlist,setChatlist]=useState("")
+   const [newSumarry,setNewSummary]=useState([])
   const speed = 20;
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -106,6 +108,17 @@ const deleteTask = (id) => {
       setError(true)
   } finally {
     setLoding(false);
+  }
+ }
+ // for the interaction
+ const hadlechatsection=async()=>{
+  try{
+    const chatgot=await chatwithsummary(chatlist,displayedText)
+    setNewSummary((prevSummaries)=>[...prevSummaries,chatgot.replace(/[#/***]/g," ")])
+    setChatlist("")
+  
+  }catch{
+    console.log(error)
   }
  }
   return (
@@ -212,25 +225,40 @@ const deleteTask = (id) => {
         </div>
       </div>
       {/*Button for AI summarry */}
-       <div className=" m-2  py-2 px-1 w-full font-mono ">
-       <button onClick={handlesummary} 
-       className=" flex h-8 items-center  gap-2 bg-gradient-to-l from-slate-500 via-slate-300 to-slate-300 px-3 rounded-lg text-[15px]  transition-all duration-500 ease-in-out 
-       hover:scale-105 hover:bg-gradient-to-l hover:from-slate-600   hover:via-slate-500 hover:to-slate-500
-       "> AI summary For task<FaRegPaperPlane  className="text-gray-950"/></button>
-       </div>
-       <div className={`w-full max-w-3xl mt-6 p-4 rounded-lg shadow-lg border ${theme==="dark"?"bg-zinc-800 shadow-2xl text-slate-50":"bg-white text-black shadow-xl"}`}>
-  <h2 className="text-xl font-bold text-center underline mb-4">📝 AI Summary</h2>
-    {error && <p>Can't Generate Summary !</p>}
-  {isLodaing ? (
-    <p className="text-center text-gray-500">Generating summary...</p>
-  ) : (
-    <div className="whitespace-pre-line text-[15px] leading-relaxed font-serif">
-      {displayedText}
-    </div>
-  )}
-</div>
+      <div className={`py-4 px-3   flex flex-col items-center  rounded-md mt-2 ${theme === "dark" ? "bg-zinc-700 text-white shadow-md   " : "bg-[#F0F2F5] text-black"}`}>
+      <div className="w-full max-w-3xl mt-6 p-4 bg-white text-black rounded-lg shadow-md">
+        <h2 className="text-xl font-bold text-center underline mb-4">📝 AI Summary</h2>
+        {error && <p className="text-red-500 text-center">Can't Generate Summary!</p>}
+        {isLodaing ? (
+          <p className="text-center text-gray-500">Generating summary...</p>
+        ) : (
+          <div className="whitespace-pre-line text-[15px] leading-relaxed font-serif">{displayedText}</div>
+        )}
+        <button onClick={handlesummary} className="mt-4 w-full font-mono  bg-black text-white py-2 rounded-md hover:bg-gray-950 flex items-center justify-center gap-2">
+          AI Summary <FaRegPaperPlane />
+        </button>
+      </div>
 
+      <div className="w-full max-w-3xl mt-6 p-4 bg-white text-black rounded-lg shadow-md">
+        <h2 className="text-xl font-bold text-center underline mb-4">💬 Chat with AI</h2>
+        <input
+          type="text"
+          value={chatlist}
+          onChange={(e) => setChatlist(e.target.value)}
+          placeholder="Ask AI something..."
+          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button onClick={hadlechatsection} className="mt-4 w-full bg-black text-white py-2 font-mono rounded-md hover:bg-gray-950 flex items-center justify-center gap-2">
+          Chat <FaRegPaperPlane />
+        </button>
+        <div className="mt-4 space-y-2 max-h-48 overflow-y-auto">
+          {newSumarry.map((chat, index) => (
+            <div key={index} className=" whitespace-pre-line bg-gray-100 p-3 rounded-md shadow-sm">{chat}</div>
+          ))}
+        </div>
+      </div>
     </div>
+</div>
   );
 };
 
