@@ -6,9 +6,8 @@ const Contact = React.forwardRef((props, ref) => {
   const { theme } = useContext(ThemeContext);
   const [expandIndex,setexpandIndex]=useState(null)
 const listshow=[
-  { head:"AI Gen-Timetable" ,text:" Automatically creates a daily schedule based on your tasks and priorities."},
-  {  head:"Calendar Integration" ,text:" Sync your tasks with a built-in calendar to plan for upcoming deadlines and events."},
-  {  head:"Study with Friends" ,text:" Invite friends to a shared timer session and stay motivated together."},
+  { head:"AI Summary" ,text:" Automatically creates best Summary of  your tasks and priorities."},
+  {  head:"Conversation" ,text:" Chat with  your AI  summary ."},
   {  head: "Progress Tracking" ,text:" Monitor your productivity and see your improvements over time."},
 ]
 const hanvdleExpand=(index)=>{

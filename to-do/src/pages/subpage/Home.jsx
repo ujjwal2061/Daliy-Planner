@@ -42,7 +42,7 @@ const Home=({ scrollToSection, featureRef, contactRef})=>{
     }
    const ThemeToggle=()=>{
     setTheme((prevtheme)=>(prevtheme==="light"?"dark":"light"))
-    setTheme(localStorage.setItem("usertheme",theme))
+
    }
    
     return(

@@ -36,7 +36,7 @@ const Footer = React.forwardRef(({ scrollToSection, homeRef }, ref) => {
             <a href="https://github.com/ujjwal2061" target="_blank" rel="noopener noreferrer">
               <FaGithub className="text-xl hover:text-gray-300 transition" />
             </a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://discord.gg/k8PdvRXA" target="_blank" rel="noopener noreferrer">
               <FaDiscord className="text-xl hover:text-gray-300 transition" />
             </a>
           </div>
