@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import {useRef} from "react"
 import {ref, update} from "firebase/database"
 import { getAuth } from 'firebase/auth';
-
+import { useNavigate } from 'react-router-dom';
 const Useracc=()=>{
    const {theme} =useContext(ThemeContext)
    const [coverImage ,setCoverImage]=useState(null);
@@ -21,6 +21,7 @@ const Useracc=()=>{
    const {userName ,setUserName ,database,Logout} =useFirebase()
    const  auth=getAuth(); 
    const user=auth.currentUser; 
+   const navigate=useNavigate()
    useEffect(()=>{
       const storedprofilePic=localStorage.getItem("profileImage")
       const storedcoverImage=localStorage.getItem('userCoverImage')
@@ -84,8 +85,9 @@ const Useracc=()=>{
             localStorage.setItem('Bio', Bio);
             localStorage.setItem("UserEmail",user.email)
             setEditMode(false)
+      
          }catch(error){
-            console.log(error)
+          
             throw error
          }
         }
@@ -94,25 +96,20 @@ const Useracc=()=>{
             setShowEmail(prevState => !prevState); // Toggle the email visibility
           };
           //logout fucntion 
-          const handleLogout=async()=>{
-            try{
-               setLoading(true)
-               await Logout(auth)
-               localStorage.removeItem("profileImage");
-               localStorage.removeItem("userCoverImage");
-               localStorage.removeItem("userName");
-               localStorage.removeItem("Bio");
-               localStorage.removeItem("UserEmail");
-               setUserName(""); 
-               setProfileImage(null);
-               setCoverImage(null);
-               setBio("");
-            }catch(error){
-            throw  error
-            }finally{
-               setLoading(false)
+          const handleLogout = async () => {
+            try {
+              setLoading(true);
+              await Logout();
+              localStorage.clear();
+              setTimeout(()=>{
+                 navigate("/");
+              },5000)
+            } catch (error) {
+              console.error("Logout error:", error);
+            } finally {
+              setLoading(false);
             }
-          }
+          };
   return (
    <section className={`p-4 min-h-screen flex flex-col items-center ${theme === "dark" ? "bg-[#18191A] text-black" : "bg-[#F0F2F5] text-black"}`}>
           {/*First Section For Coverimage  and Pesonal INfroamtion*/}
@@ -165,19 +162,19 @@ const Useracc=()=>{
                     </>
                   )}
            </div>
-           <div className=' flex flex-col justify-start  mr-[245px] items-start w-1/2'>
+           <div className=' flex flex-col justify-start  mr-[245px] items-start '>
               <div className={` hidden md:block w-[450px] h-16 px-3 py-2 m-2  flex-row  justify-center items-center rounded-md   gap-2 ${theme === "dark" ? " bg-[#242526] text-white" : "bg-boxBackground text-black"}` }>
-               <div className="flex  flex-row justify-between    rounded-md items-center px-1 ml-2 ">
+               <div className="flex  flex-row justify-between w-96  rounded-md items-center px-1 ml-2 ">
                <p className='font-mono  flex  font-semibold'>Email:</p>
               {user && showEmail  &&  (
                  <h2 className='font-mono text-sm  mr-48 font-semibold'>{user.email}</h2> 
                )}
-                <div className="  flex-row justify-center items-center   ">
-                <button type="button"  onClick={handleshowEmail} className='flex bg-slate-800 px-2 py-1  h-8 md:h-8  font-mono  font-semibold rounded-md'>{showEmail ? "Hide":"Show" }</button>
-                </div>
+
+                <button type="button"  onClick={handleshowEmail} className='flex px-2 py-1  h-8 md:h-8  bg-pink-700 font-mono  font-semibold rounded-md'>{showEmail ? "Hide":"Show" }</button>
+            
                </div>
             </div>
-            <div className=' w-1/2  '>
+            <div className=''>
               <button  onClick={handleLogout}  className='bg-slate-800 text-white px-4 py-2   rounded-md font-mono font-semibold hover:bg-gray-900 transition-all sm:px-6' >
                 {loading ? "Logging out..." : "Logout"}
             </button>

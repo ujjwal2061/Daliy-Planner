@@ -90,7 +90,7 @@ if (!response.ok) {
 const data = await response.json();
  return data.candidates[0].content.parts[0].text;
   }catch(error){
-    console.log("Can't make it",error)
+    throw error
   }
 
 }

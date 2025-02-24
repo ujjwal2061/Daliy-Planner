@@ -139,27 +139,27 @@ const handlebreaketimer=()=>{
  },[breake ,isStart])
 
 
-const searchUserByName = async (user) => {
-  try {
+// const searchUserByName = async (user) => {
+//   try {
     
-const dataref=query(
-  ref(database,'users' ),
- orderByChild("Name"),
- equalTo(user)
-)
+// const dataref=query(
+//   ref(database,'users' ),
+//  orderByChild("Name"),
+//  equalTo(user)
+// )
 
-const snapshot=await get(dataref);
-if(snapshot.exists()){
-  const userData=snapshot.val()
-  const userkey=Object.keys(userData)[0]
-  const userName=userData[userkey].Name;
-  return userName;
-}setEmail(""); // Clear input after search
-  } catch (error) {
-    throw new Error(error.message);
+// const snapshot=await get(dataref);
+// if(snapshot.exists()){
+//   const userData=snapshot.val()
+//   const userkey=Object.keys(userData)[0]
+//   const userName=userData[userkey].Name;
+//   return userName;
+// }setEmail(""); // Clear input after search
+//   } catch (error) {
+//     throw new Error(error.message);
   
-  }
-};
+//   }
+// };
 
 // function to get image
 useEffect(() => {
@@ -184,7 +184,7 @@ useEffect(() => {
   return (
     <section className={` min-h-screen  flex flex-row justify-center items-center ${theme==="dark" ? "bg-[#18191A] text-white":"bg-[#F0F2F5] text-black"}`}>
       <div className=' flex  flex-col  w-full  h-[700px] items-center gap-4'>
-      <div className=" w-full h-32 p-2 flex flex-col gap-3 items-center justify-center md:justify-end ">
+      {/* <div className=" w-full h-32 p-2 flex flex-col gap-3 items-center justify-center md:justify-end ">
           <div className='p-2 flex gap-2 '>
           <input type="search" placeholder='Invite your buddy' value={name} onChange={(e)=>setEmail(e.target.value)}  className='px-3 py-1  text-black rounded-md font-myfont '/>
             <button  
@@ -195,7 +195,7 @@ useEffect(() => {
            <div className="bg-slate-300 px-3 py-1 shadow-lg text-black  font-myfont rounded-lg">
             Current Time: {`${spentime.hour}:${spentime.minute}`}...{' '}
           </div> 
-      </div>
+      </div> */}
    
          <div className='flex flex-row gap-2 p-2'>
         <div className={` flex  flex-col md:flex-row gap-2   px-2 py-6 rounded-md ${theme==="dark" ? "bg-zinc-600 text-white":"bg-background text-black"}`}>

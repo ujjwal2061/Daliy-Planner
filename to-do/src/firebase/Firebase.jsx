@@ -18,6 +18,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+
  const app = initializeApp(firebaseConfig);
  const auth=getAuth(app)
  const db=getFirestore(app)
@@ -31,7 +32,6 @@ const firebaseConfig = {
  export const FirebaseProvider=({children})=>{
   const [userName ,setUserName]=useState("")
   const [currentUser, setCurrentUser] = useState(null);
-
   const singup = async (email, password ,userName) => {
     try{
      const userCredential=await createUserWithEmailAndPassword(auth, email, password)
@@ -39,14 +39,17 @@ const firebaseConfig = {
      await updateProfile(user,{
       displayName: userName,
     });
+        
+    await updateProfile(user, { displayName: userName });
+    await auth.currentUser.reload(); 
+    const updatedUser = auth.currentUser;
      await set(ref(database ,`users/${user.uid}`),{  // setting  the user Detalies in Firebase RealTime database 
      Name:userName,
      email:user.email,
      createdAt:new Date().toLocaleString()
     })
      setUserName(userName);
-     const userDetails={...user, Name:userName ,email:user.email};
-     return  userDetails
+     return updatedUser;
    }catch(error){
    throw error;
    }
@@ -57,6 +60,7 @@ const firebaseConfig = {
   }
   const Logout=()=>{
      return signOut(auth)
+
   }
 
   
