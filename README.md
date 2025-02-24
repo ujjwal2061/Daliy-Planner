@@ -62,11 +62,5 @@ DailyPlanner is a web application that provides users with a simple summary of t
 - Chat with the AI-powered summary for better insights.
 - Activate the focus timer and earn rewards for staying focused for 45 minutes.
 
-## Contributing
 
-Pull requests are welcome! Feel free to contribute by improving features or fixing bugs.
-
-## License
-
-This project is licensed under the MIT License.
 
