@@ -5,38 +5,43 @@ const   GEMINILINK=import.meta.env.VITE_GEMIN_LINK;
 
 export const getOpenaiSummary=async(todos ,shortTermtodos,longtermtodos)=>{
     try{
-        const prompt=`
-           Analyze these goals and provide a management strategy with this exact structure:
-
-          **All Golas**
+        let  prompt=" First Analyze the golas and Provide the Simple And nice Strategy with Good Structure Manner:";
+         if(todos.length > 0){
+          prompt+=`**All Golas**
           ${JSON.stringify(todos)}
+          `
+         }  
+         if(shortTermtodos.length > 0){
+          prompt+=`**Short-TermGoals (0-3 months) give simple guid for the short term goals **
+          ${JSON.stringify(shortTermtodos)}\n\n;
+          `
+         }  
           
-          **Short-Term-Goals(0-3 months)**
-           ${JSON.stringify(shortTermtodos)}
+        if(longtermtodos.length > 0){
+          prompt += `**Long-Term Goals (6+ months)**\n${JSON.stringify(longtermtodos)}\n\n`;
+        }
+        
+        
+        prompt += `## Management Strategy: [Overall Theme]\n[Brief overview paragraph]\n\n`;
 
-           **Long-Term-Goals(6+ months)**
-            ${JSON.stringify(longtermtodos)}
-  ## Management Strategy: [Overall Theme]
-  [Brief overview paragraph]
-  
-  **1. Quick Wins**
-  - [Action 1]
-  - [Action 2]
-  
-  **2. Foundation Builders**
-  - [Action 1]
-  - [Action 2]
-  
-  **3. Long-Term Success**
-  - [Action 1]
-  - [Action 2]
-  
-  **4. Potential Pitfalls**
-  - [Risk 1]
-  - [Risk 2]
-    Use bold headers for sections and bullet points for actions. Avoid markdown except for **bold**.
-    Sources  for the Study materails give the some resources For the Study Plane
-    `;
+        if (shortTermtodos.length > 0) {
+            prompt += `**1. Quick Wins**\n- [Action 1] Simple guide for the task in three or four lines.\n\n`;
+        }
+        if (todos.length > 0 || shortTermtodos.length > 0) {
+            prompt += `**2. Foundation Builders**\n- [Action 1]\n\n`;
+        }
+        if (longtermtodos.length > 0) {
+            prompt += `**3. Long-Term Success**\n- [Action 1]\n\n`;
+        } 
+    ; 
+    prompt += `Use bold headers for sections and bullet points for actions.
+       Avoid markdown except for **bold**.\n
+       Provide study resources and additional guidance where needed. 
+       Also Give the Sources for the for the Study Material and  
+       Format links as follows: Resource Name:(https://example.com).\n
+       Write somthing to  Motivate  theme`
+      
+       ;
        // Gemini API call
     const response = await fetch(`${GEMINILINK}?key=${APIKEY}`, {
         method: 'POST',
@@ -54,7 +59,9 @@ export const getOpenaiSummary=async(todos ,shortTermtodos,longtermtodos)=>{
         throw new Error(`API Error: ${response.status} ${response.statusText}`);
       }
         const data = await response.json();
-        return data.candidates[0].content.parts[0].text;
+        const result= data.candidates[0].content.parts[0].text;
+        
+        return result
     }catch(error){
         console.error('Error generating summary:', error.response ? error.response.data : error.message);
         throw error;

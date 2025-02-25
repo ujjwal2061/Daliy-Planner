@@ -19,10 +19,11 @@ const Workplace = () => {
   const [task, setTasks] = useState({ text: "", description: "", category: "all-goal" });
   const [aiSummary,setaiSummary]=useState("")
   const [isLodaing,setLoding]=useState(false)
-  const[error,setError]=useState(false) 
+  const [error,setError]=useState(false) 
   const [displayedText, setDisplayedText] = useState("");
-   const [chatlist,setChatlist]=useState("")
-   const [newSumarry,setNewSummary]=useState([])
+  const [chatlist,setChatlist]=useState("")
+  const [userchat,setUserchat]=useState("")
+  const [newSumarry,setNewSummary]=useState([])
   const speed = 20;
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,12 +58,15 @@ useEffect(() => {
  
 }, [aiSummary])
 
+
+
 useEffect(() => {
   const storedSummary = localStorage.getItem("Summary");
   if (storedSummary) {
     setaiSummary(storedSummary.replace(/[#/***]/g," "));
   }
 }, []);
+
   const handleAdd = () => {
     if (editID) {
         dispatch(updateTodoFirebase({ db, id: editID, ...task })).then(() => {
@@ -98,12 +102,15 @@ const deleteTask = (id) => {
   try{
     setLoding(true)
     const summary=await getOpenaiSummary(
+      
       todos,
       shortTermtodos,
       longtermtodos
     );
+
     setaiSummary(summary.replace(/[#/***]/g," "));
     localStorage.setItem("Summary",summary)
+ 
   }catch(err){
       setError(true)
   } finally {
@@ -117,10 +124,11 @@ const deleteTask = (id) => {
     setNewSummary((prevSummaries)=>[...prevSummaries,chatgot.replace(/[#/***]/g," ")])
     setChatlist("")
   
-  }catch{
-    console.log(error)
+  }catch(error){
+    throw error
   }
  }
+
   return (
     <div className={` p-4 min-h-screen flex flex-col items-center ${theme === "dark" ? "bg-[#18191A] text-black" : "bg-[#F0F2F5] text-black"}`}>
       <div className={` w-full flex flex-col  items-center px-2 py-1 rounded-md ${theme === "dark" ? " bg-[#242526] text-white" : "bg-boxBackground text-black"}`}>
@@ -232,7 +240,10 @@ const deleteTask = (id) => {
         {isLodaing ? (
           <p className="text-center text-gray-500">Generating summary...</p>
         ) : (
-          <div className="whitespace-pre-line text-[15px] leading-relaxed font-serif">{displayedText}</div>
+          <div className="whitespace-pre-line text-[15px] leading-relaxed font-serif">
+            {displayedText}
+          </div>
+        
         )}
         <button onClick={handlesummary} className="mt-4 w-full font-mono  bg-black text-white py-2 rounded-md hover:bg-gray-950 flex items-center justify-center gap-2">
           AI Summary <FaRegPaperPlane />
@@ -244,7 +255,7 @@ const deleteTask = (id) => {
         <input
           type="text"
           value={chatlist}
-          onChange={(e) => setChatlist(e.target.value)}
+          onChange={(e) =>setChatlist(e.target.value)}
           placeholder="Ask AI something..."
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
