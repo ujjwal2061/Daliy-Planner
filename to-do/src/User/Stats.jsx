@@ -3,9 +3,8 @@ import first from '../assets/first.mp3'
 import second from '../assets/second.mp3'
 import { ThemeContext } from '../theme/ThemeContext';
 import { useContext } from 'react';
-import { useFirebase } from '../firebase/Firebase';
 import { IoStarSharp } from "react-icons/io5";
-import { ref, get, query, orderByChild, equalTo } from "firebase/database";
+
 const Stats=()=>{
 
   const links=[
@@ -27,9 +26,9 @@ const Stats=()=>{
     }
     
   ]
-  const { database}=useFirebase()
+
   const {theme} =useContext(ThemeContext)
-  const [name,setEmail]=useState("")
+
   
   const [startTime,setstartTime]=useState(45*60) // convert the 25 into min  
   const [isStart,setISStart]=useState(false)
@@ -139,27 +138,6 @@ const handlebreaketimer=()=>{
  },[breake ,isStart])
 
 
-// const searchUserByName = async (user) => {
-//   try {
-    
-// const dataref=query(
-//   ref(database,'users' ),
-//  orderByChild("Name"),
-//  equalTo(user)
-// )
-
-// const snapshot=await get(dataref);
-// if(snapshot.exists()){
-//   const userData=snapshot.val()
-//   const userkey=Object.keys(userData)[0]
-//   const userName=userData[userkey].Name;
-//   return userName;
-// }setEmail(""); // Clear input after search
-//   } catch (error) {
-//     throw new Error(error.message);
-  
-//   }
-// };
 
 // function to get image
 useEffect(() => {
@@ -182,25 +160,16 @@ useEffect(() => {
   localStorage.setItem("unlockedImages", JSON.stringify(newUnlocked));
 }, [spentime]);
   return (
-    <section className={` min-h-screen  flex flex-row justify-center items-center ${theme==="dark" ? "bg-[#18191A] text-white":"bg-[#F0F2F5] text-black"}`}>
+    <section className={` min-h-screen  flex flex-row justify-center items-center ${theme === "dark" ? "bg-gray-900 text-black" : "bg-gray-100 text-black"}`}>
       <div className=' flex  flex-col  w-full  h-[700px] items-center gap-4'>
-      {/* <div className=" w-full h-32 p-2 flex flex-col gap-3 items-center justify-center md:justify-end ">
-          <div className='p-2 flex gap-2 '>
-          <input type="search" placeholder='Invite your buddy' value={name} onChange={(e)=>setEmail(e.target.value)}  className='px-3 py-1  text-black rounded-md font-myfont '/>
-            <button  
-            onClick={()=>searchUserByName(name)}
-            className=' text-white bg-gradient-to-r from-slate-900  w-20  via-gray-800 to-blue-500 px-3 rounded-lg transition-all ease-in-out  duration-200 py-1  
-            font-myfont hover:bg-gradient-to-r hover:from-blue-500  hover:text-black hover:via-blue-300 hover:to-blue-200 hover:scale-105 hover:shadow-lg'>Join</button>
-          </div> 
-           <div className="bg-slate-300 px-3 py-1 shadow-lg text-black  font-myfont rounded-lg">
-            Current Time: {`${spentime.hour}:${spentime.minute}`}...{' '}
-          </div> 
-      </div> */}
-   
          <div className='flex flex-row gap-2 p-2'>
-        <div className={` flex  flex-col md:flex-row gap-2   px-2 py-6 rounded-md ${theme==="dark" ? "bg-zinc-600 text-white":"bg-background text-black"}`}>
+        <div className={` flex  flex-col md:flex-row gap-2   px-2 py-6 rounded-md ${theme==="dark"?"bg-gray-800   shadow-xl":"bg-white shadow-lg"}`}>
         <audio ref={firstRef} src={first} />
-        <select className='text-black bg- p-2 rounded-md font-semibold font-mono tracking-wide cursor-pointer'
+        <select  className={`p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none ${
+          theme ==="dark"
+            ? 'bg-gray-700 border-gray-600 text-white' 
+            : 'bg-white border-gray-300 text-gray-800'
+        } border`}
          onChange={(e)=>{
            const newtime=parseInt(e.target.value)*60
            setstartTime(newtime)
@@ -210,7 +179,8 @@ useEffect(() => {
         <option vlaue="20">20min</option>
         <option value="10">10min</option>
        </select>
-        <h2 className=' px-3 py-1 bg-slate-300 font-bold rounded-md text-black text-[18px] font-jetbrains tracking-tighter'>Focus:
+       <h2 className={`${theme==="dark"?"text-white bg-gray-600":"text-black bg-goalsBoxBackground"} 
+       px-3 py-1  flex items-center font-bold rounded-md  text-[18px] font-jetbrains tracking-tighter`}>Focus:
           <span className=' font-semibold l-1 text-[18px] font-mono'>{timechange(startTime)}</span></h2>
           {/* <audio ref={soundRef} src='sound.mp3' /> */}
         <div className='flex  gap-3 '>
@@ -226,9 +196,13 @@ useEffect(() => {
          onClick={restimer}>Reset</button>
         </div>
        </div>
-         <div className={`flex flex-col  md:flex-row gap-2 px-2  py-6 rounded-md ${theme==="dark" ? "bg-zinc-600 text-white":"bg-background text-black"} `}>
+       <div className={` flex  flex-col md:flex-row gap-2   px-2 py-6 rounded-md ${theme==="dark"?"bg-gray-800  shadow-xl":"bg-white shadow-lg"}`}>
        {/*Breake Time*/}
-       <select className='text-black bg- px-2 py-1 rounded-md font-semibold font-mono tracking-wide cursor-pointer'    
+       <select  className={`p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none ${
+          theme ==="dark"
+            ? 'bg-gray-700 border-gray-600 text-white' 
+            : 'bg-white border-gray-300 text-gray-800'
+        } `}
           onChange={(e)=>{
             const newBreak=parseInt(e.target.value)*60
             setbreak(newBreak)
@@ -237,7 +211,7 @@ useEffect(() => {
         <option  value="2">2min</option>
        </select>
        <audio ref={soundRef} src={second} />
-       <h2 className='bg-slate-300 px-3 py-1  font-bold rounded-md text-black text-[18px] font-jetbrains tracking-tighter'>Breake:
+       <h2 className={`${theme==="dark"?"text-white bg-gray-600":"text-black bg-goalsBoxBackground"} px-3 py-1  flex items-center font-bold rounded-md  text-[18px] font-jetbrains tracking-tighter`}>Breake:
        <span className=' font-semibold l-1 text-[18px] font-mono'>{Breakchange(breake)}</span></h2>
        <div className='flex  gap-3 '>
        <button 
@@ -251,9 +225,9 @@ useEffect(() => {
      </div>
      
           <div className={`w-full max-w-2xl flex flex-col justify-center items-center gap-3 p-4 rounded-lg ${
-              theme === 'dark' ? 'bg-zinc-700' : 'bg-white shadow-md'
+              theme === 'dark' ? 'bg-gray-800 text-white ' : 'bg-white shadow-md'
             } shadow-lg`}>
-            <h3 className="text-lg font-semibold mb-4">Session Progress</h3>
+            <h3 className=" font-semibold  text-[20px] mb-4">Session Progress</h3>
             
             <div className="w-full rounded-full h-2.5 bg-gray-300">
               <div className=" bg-green-500 h-2.5 rounded-full transition-all duration-300 "

@@ -111,23 +111,26 @@ const Useracc=()=>{
             }
           };
   return (
-   <section className={`p-4 min-h-screen flex flex-col items-center ${theme === "dark" ? "bg-[#18191A] text-black" : "bg-[#F0F2F5] text-black"}`}>
+   <section className={`p-4 min-h-screen flex flex-col items-center ${theme === "dark" ? "bg-gray-900  text-black" : "bg-gray-100 text-black"}`}>
           {/*First Section For Coverimage  and Pesonal INfroamtion*/}
           <div className='flex flex-col justify-start w-full ' >
-          <div className='flex flex-col  justify-center items-center  '>
+          <div className='flex flex-col  justify-center  md:ml-32 '>
              <div className="relative w-full max-w-4xl group  cursor-pointer px-2 py-2" onClick={()=>fileInputImage.current.click()} >
                <input  ref={fileInputImage} type='file' accept='image/*'  onChange={handledImageupload} style={{ display:"none" }} />
-                <img  src={coverImage ||  'cover.jpeg'}className=' w-full h-64 object-cover rounded-lg group-hover:opacity-40 transition-opacity' />
+                <img  src={coverImage ||  '/cover.jpeg'}className=' w-full h-64 object-cover rounded-lg group-hover:opacity-40 transition-opacity' />
                 <div className='absolute inset-0 flex items-center justify-center text-black  opacity-0 group-hover:opacity-50 '>
                   <span className=' px-2  rounded-lg bg-opactiy-20  bg-slate-200 tracking-tighter font-sans font-semibold'>Change Cover photo</span>
                 </div>
              </div>
           {/*Profile Image */}
-           <div className={`w-[80%] sm:w-[95%] max-w-4xl px-2    py-1 m-2 flex sm:flex-row    items-center rounded-md  flex-col gap-2 ${theme === "dark" ? " bg-[#242526] text-white" : "bg-boxBackground text-black"}`}>
+          <div className={`
+               w-4/5 sm:w-11/12 max-w-4xl px-2 py-1 m-2 flex sm:flex-row items-center rounded-md flex-col gap-2
+         ${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-black shadow-lg"}
+              `}>
              {editMode ? (
                <>
                 <div className="px-2  cursor-pointer group    rounded-lg " onClick={()=>profileInputImage.current.click()} >
-                 <input ref={profileInputImage || 'profile.jpg' } type='file' accept='image/*' onChange={profileImagehandle}  style={{ display:"none" }}  />
+                 <input ref={profileInputImage || '/profile.jpeg' } type='file' accept='image/*' onChange={profileImagehandle}  style={{ display:"none" }}  />
                  <img  src={profileImage} className='w-20 h-20 object-coverr object-cover  group-hover:opacity-40 transition-opacity  rounded-full' />
                 </div>
                <div className=' px-2 py-1  h-52 sm:h-56 sm:w-[80%] flex flex-col  justify-between w-[70%] rounded'>
@@ -140,7 +143,7 @@ const Useracc=()=>{
                   <div className='text-right text-xs text-gray-600'>
                      {Bio.length}/{Max_Bio_Text}
                    </div>
-                   <div className='bg-gray-800 hover:bg-gray-900 px-2 py-1 h-10  w-20   items-center  flex justify-center font-mono font-semibold rounded-md'>
+                   <div className='bg-gray-700 hover:bg-gray-900 px-2 py-1 h-10  w-20   items-center  flex justify-center font-mono font-semibold rounded-md'>
                    <button onClick={handleChangeProfile}>Save</button>
                   </div>
                   </div>
@@ -155,27 +158,27 @@ const Useracc=()=>{
                     <p className=' sm:w-1/2 w-28  h-8 rounded-lg px-2 cursor-text font-mono  bg-slate-100 text-black py-1'>{ newUserName || userName}</p>
                      <h3 className='font-semibold font-mono'>Bio</h3>
                      <p className='font-mono text-sm w-full sm:w-1/2  h-32 rounded-lg cursor-text   bg-slate-100 text-black px-2 py-1  '>{Bio || "Set the Bio"}</p>
-                  <div className=' mt-2 bg-gray-800 hover:bg-gray-900 px-2 py-1 h-10  w-20   items-center  flex justify-center font-mono font-semibold rounded-md'>
+                  <div className=' mt-2 bg-gray-500 hover:bg-gray-900 px-2 py-1 h-10  w-20   items-center  flex justify-center font-mono font-semibold rounded-md'>
                    <button onClick={()=>setEditMode(true)}>Edit</button>
                   </div>
                   </div>
                     </>
                   )}
            </div>
-           <div className=' flex flex-col justify-start  mr-[245px] items-start '>
-              <div className={` hidden md:block w-[450px] h-16 px-3 py-2 m-2  flex-row  justify-center items-center rounded-md   gap-2 ${theme === "dark" ? " bg-[#242526] text-white" : "bg-boxBackground text-black"}` }>
-               <div className="flex  flex-row justify-between w-96  rounded-md items-center px-1 ml-2 ">
+           <div className=' flex    flex-col justify-start   items-start '>
+              <div className={`   md:block  hidden  w-[450px] h-16 px-3 py-2 m-2  flex-row   items-center rounded-md   gap-2 ${theme === "dark" ? " bg-gray-800 text-white" : "bg-boxBackground text-black"}` }>
+               <div className="flex  flex-row justify-between w-96  rounded-md  items-center px-1">
                <p className='font-mono  flex  font-semibold'>Email:</p>
               {user && showEmail  &&  (
-                 <h2 className='font-mono text-sm  mr-48 font-semibold'>{user.email}</h2> 
+                 <h2 className='font-mono text-sm  ml-0  mr-auto font-semibold'>{user.email}</h2> 
                )}
 
-                <button type="button"  onClick={handleshowEmail} className='flex px-2 py-1  h-8 md:h-8  bg-pink-700 font-mono  font-semibold rounded-md'>{showEmail ? "Hide":"Show" }</button>
+                <button type="button"  onClick={handleshowEmail} className='flex px-2 py-1  h-8 md:h-8  bg-gray-700 font-mono  font-semibold rounded-md'>{showEmail ? "Hide":"Show" }</button>
             
                </div>
             </div>
-            <div className=''>
-              <button  onClick={handleLogout}  className='bg-slate-800 text-white px-4 py-2   rounded-md font-mono font-semibold hover:bg-gray-900 transition-all sm:px-6' >
+            <div className='w-1/2 flex   items-center '>
+              <button  onClick={handleLogout}  className='bg-slate-800 text-white px-4 py-2   rounded-md font-mono font-semibold hover:bg-gray-950 transition-all sm:px-6' >
                 {loading ? "Logging out..." : "Logout"}
             </button>
             </div>
@@ -188,5 +191,3 @@ const Useracc=()=>{
 export default Useracc;
 
 
- /// password :Luffy2001#
- /// email:luffy@gmail.com

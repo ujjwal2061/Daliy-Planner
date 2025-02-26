@@ -56,7 +56,7 @@ export default function Sidebar({className}) {
              fixed bottom-0 flex  flex-row left-0 
              transition-all ease-in-out duration-300 
             ${sidebarShow ? "w-16" : ""}
-             ${theme ==="dark" ?"bg-zinc-900 text-white" : "bg-white text-black"}
+             ${theme ==="dark" ?"bg-gray-900 text-white" : "bg-white text-black"}
              border-t md:border-r border-gray-200 dark:border-gray-700
              z-50
              ${isScrolled ? "hidden md:flex" : "flex"}`}>
@@ -71,7 +71,7 @@ export default function Sidebar({className}) {
       <NavLink
       key={link.id}
       to={link.link}
-      className={`flex md:flex-row mr-2 md:mt-20 items-center  ${ sidebarShow ? "w-auto" : "w-8" } px-1 py-1  rounded-md  ${theme ==="dark" ?" bg-zinc-800 hover:bg-zinc-600":"bg-slate-200 hover:bg-slate-400"}`} >
+      className={`flex md:flex-row mr-2 md:mt-20 items-center  ${ sidebarShow ? "w-auto" : "w-8" } px-1 py-1  rounded-md  ${theme ==="dark" ?" bg-gray-800 shadow-lg  hover:bg-gray-900":"bg-slate-200 hover:bg-slate-400"}`} >
           <span className='text-sm '>{link.icons}</span>
            {sidebarShow && <span className={` font-sans md:block hidden font-semibold `}>{link.name}</span>}
          </NavLink>
