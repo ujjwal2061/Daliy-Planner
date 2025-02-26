@@ -130,28 +130,44 @@ const deleteTask = (id) => {
  }
 
   return (
-    <div className={` p-4 min-h-screen flex flex-col items-center ${theme === "dark" ? "bg-[#18191A] text-black" : "bg-[#F0F2F5] text-black"}`}>
-      <div className={` w-full flex flex-col  items-center px-2 py-1 rounded-md ${theme === "dark" ? " bg-[#242526] text-white" : "bg-boxBackground text-black"}`}>
+    <div className={` p-4 min-h-screen flex flex-col items-center ${theme === "dark" ? "bg-gray-900 text-black" : "bg-gray-100 text-black"}`}>
+      <div className=" w-full flex flex-col  items-center px-2 py-1 rounded-md ">
       <div className="w-1/2 max-w-3xl text-center">
-        <h1 className="text-3xl font-semibold font-mono   tracking-tighter  p-3 rounded-md">Daily Planner</h1>
+      <h1 className={`text-5xl  font-semibold
+        ${theme === "dark"?"text-white":"text-transparent bg-clip-text bg-gradient-to-r  from-indigo-600 to-purple-600 -mb-1"}`}>
+            Daily Planner
+          </h1>
       </div>
 
       {/* Input Section */}
-      <div className="w-full max-w-3xl mt-6 p-4 bg-white text-black rounded-lg shadow-md flex flex-col sm:flex-row gap-3">
+      <div className={`${theme =="dark"? 'bg-gray-800 border-gray-700' : ' border-gray-200'} rounded-lg shadow-lg p-6 mt-5 border`}>
+        <div className="flex flex-col sm:flex-row gap-4 ">
         <input
           type="text"
           name="text"
           value={task.text}
           onChange={handleChange}
           placeholder="Enter goal..."
-          className="flex-1  p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={` rounded-lg px-4  ${ theme==="dark" 
+              ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+              : 'bg-white border-gray-300 text-gray-800'
+          } border`}
           />
-        <select name="category" value={task.category} onChange={handleChange} className="bg-blue-600 hover:bg-blue-700 text-sm  font-mono cursor-pointer text-[13px] text-white p-2 rounded-md">
+        <select name="category" value={task.category} onChange={handleChange} 
+         className={`p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none ${
+          theme ==="dark"
+            ? 'bg-gray-700 border-gray-600 text-white' 
+            : 'bg-white border-gray-300 text-gray-800'
+        } border`}>
           <option value="all-goal" className="hover:bg-blue-500 font-mono">All  goal</option>
           <option value="short-term" className=" hover:bg-blue-500 font-mono">Short-Term Goal</option>
           <option value="long-term" className="hover:bg-blue-500 font-mono">Long-Term Goal</option>
         </select>
-        <button onClick={handleAdd} className="bg-blue-600 text-white px-4 py-2  text-sm  flex font-monoflex shadow-2xl rounded-xl items-center gap-2 hover:bg-blue-700">
+        <button onClick={handleAdd} 
+       className={`px-6 py-3 rounded-lg transition-colors flex items-center justify-center font-medium shadow-md hover:shadow-lg ${
+        theme ==="dark"? "bg-blue-700 hover:bg-blue-600 text-white"
+          : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white'
+      }`}>
           <IoMdAdd />
           {editID ? "Update" : "Add Task"}
         </button>
@@ -165,17 +181,25 @@ const deleteTask = (id) => {
           onChange={handleChange}
           placeholder="Enter description..."
           rows={3}
-          className="w-full text-black  p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+           className={`w-full p-3 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none h-24 ${
+            theme==="dark" 
+              ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+              : 'bg-white border-gray-300 text-gray-800'
+          } border`}
           ></textarea>
       </div>
     </div>
+    </div>
       {/* Goals List */}
-      <div className={`w-full px-6 py-4  rounded-md mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ${theme === "dark" ? " bg-[#242526] text-black" : "bg-boxBackground text-black"}`}>
+      <div className={"w-full px-6 py-4  rounded-md mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 "
+        }>
         {/* All Goals */}
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold  flex flex-row justify-center font-jetbrains mb-3">🎯All Goals</h2>
+        <div className="bg-white h-auto  rounded-lg shadow-md">
+          <h2 className={`text-lg  w-full  font-semibold rounded-t-md h-10  flex flex-row justify-center font-jetbrains 
+            ${theme==="dark"?"bg-gradient-to-r from-gray-800 to-gray-700 text-white":"bg-gradient-to-r from-indigo-500 to-purple-600"}`}>🎯All Goals</h2>
+          <div className="px-3 ">
           {todos.map((todo, index) => (
-            <div key={index}  draggable className="bg-gray-100 p-3 rounded-md mb-3 shadow-sm">
+            <div key={index}  className="bg-gray-100 p-3 rounded-md mb-3 shadow-sm">
               <h3 className="font-medium">{todo.text}</h3>
               <p className="text-gray-600">{todo.description}</p>
               <div className="flex justify-between mt-2">
@@ -189,16 +213,18 @@ const deleteTask = (id) => {
               <p className="font-mono text-sm tracking-tighter  font-semibold">{todo.createdAt}</p>
             </div>
           ))}
+          </div>
         </div>
 
         {/* Short-Term Goals */}
-        <div className="bg-white p-4  h-auto rounded-lg shadow-md">
-          <h2 className="text-lg  flex justify-center  font-jetbrains font-semibold mb-3">⏳Short-Term Goals</h2>
+        <div className="bg-white  h-auto   rounded-lg shadow-md">
+          <h2 className={`text-lg w-full font-semibold rounded-t-md h-10  flex flex-row justify-center font-jetbrains 
+            ${theme==="dark"?"bg-gradient-to-r from-blue-900 to-blue-800 text-white":"bg-gradient-to-r from-blue-500 to-cyan-600"}`}>⏳Short-Term Goals</h2>
+           <div className="px-3">
           {shortTermtodos.map((todo, index) => (
-            <div key={index} draggable  className="bg-gray-100 p-3 rounded-md mb-3 shadow-sm">
+            <div key={index}   className="bg-gray-100  rounded-md mb-3 shadow-sm">
               <h3 className="font-medium">{todo.text}</h3>
               <p>{todo.description}</p>
-             
               <div className="flex justify-between mt-2">
                 <button onClick={() => editTask(todo.id)} className="bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700">
                   Edit
@@ -210,13 +236,16 @@ const deleteTask = (id) => {
                 <p className="font-mono text-sm  tracking-tighter  font-semibold">{todo.createdAt}</p>
             </div>
           ))}
+          </div>
         </div>
 
         {/* Long-Term Goals */}
-        <div className="bg-white p-4 h-auto  rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold  flex flex-row justify-center  font-jetbrains mb-3">🚩Long-Term Goals</h2>
+        <div className="bg-white  h-auto rounded-lg shadow-md">
+          <h2 className={`text-lg  w-full h-10 font-semibold  rounded-t-md  flex flex-row justify-center  font-jetbrains mb-3
+           ${theme==="dark"?"bg-gradient-to-r from-red-900 to-red-800 text-white":"bg-gradient-to-r from-red-500 to-pink-600"}`}>🚩Long-Term Goals</h2>
+           <div className=" px-3 ">
           {longtermtodos.map((todo, index) => (
-            <div key={index} draggable  className="bg-gray-100 p-3 rounded-md mb-3 shadow-sm">
+            <div key={index} draggable  className="bg-gray-100 shadow-md  px-3 rounded-md mb-3 ">
               <h3 className="font-medium">{todo.text}</h3>
               <p>{todo.description}</p>
               <div className="flex justify-between mt-2">
@@ -231,11 +260,15 @@ const deleteTask = (id) => {
             </div>
           ))}
         </div>
+        </div>
       </div>
       {/*Button for AI summarry */}
-      <div className={`py-4 px-3   flex flex-col items-center  rounded-md mt-2 ${theme === "dark" ? "bg-zinc-700 text-white shadow-md   " : "bg-[#F0F2F5] text-black"}`}>
-      <div className="w-full max-w-3xl mt-6 p-4 bg-white text-black rounded-lg shadow-md">
-        <h2 className="text-xl font-bold text-center underline mb-4">📝 AI Summary</h2>
+      <div className="py-4 px-3    flex flex-col items-center  rounded-md mt-2">
+      <div className="w-full max-w-3xl mt-6   bg-white text-black rounded-lg shadow-md">
+        <h2 className={`w-full   max-w-3xl h-10 flex  rounded-t-md items-center font-serif text-xl p-4 bg-white  shadow-md
+      ${theme==="dark"? 'bg-gray-700 text-white' : 'bg-gradient-to-r from-purple-600 to-indigo-600'}`}>📝 AI Summary</h2>
+      <div className="px-3">
+
         {error && <p className="text-red-500 text-center">Can't Generate Summary!</p>}
         {isLodaing ? (
           <p className="text-center text-gray-500">Generating summary...</p>
@@ -244,25 +277,30 @@ const deleteTask = (id) => {
             {displayedText}
           </div>
         
-        )}
+      )}
+      </div>
         <button onClick={handlesummary} className="mt-4 w-full font-mono  bg-black text-white py-2 rounded-md hover:bg-gray-950 flex items-center justify-center gap-2">
           AI Summary <FaRegPaperPlane />
         </button>
       </div>
 
-      <div className="w-full max-w-3xl mt-6 p-4 bg-white text-black rounded-lg shadow-md">
-        <h2 className="text-xl font-bold text-center underline mb-4">💬 Chat with AI</h2>
+      <div className="w-full max-w-3xl mt-6  bg-white text-black rounded-lg shadow-md">
+      <h2 className={`w-full   max-w-3xl h-10 flex  rounded-t-md items-center font-serif text-xl p-4 bg-white  shadow-md
+      ${theme==="dark"? 'bg-gray-700 text-white' : 'bg-gradient-to-r from-purple-600 to-indigo-600'}`}>💬 Chat with AI</h2>
+          <div className="px-3 ">
+
         <input
           type="text"
           value={chatlist}
           onChange={(e) =>setChatlist(e.target.value)}
           placeholder="Ask AI something..."
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+          className="w-full p-2 border mt-2  border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          </div>
         <button onClick={hadlechatsection} className="mt-4 w-full bg-black text-white py-2 font-mono rounded-md hover:bg-gray-950 flex items-center justify-center gap-2">
           Chat <FaRegPaperPlane />
         </button>
-        <div className="mt-4 space-y-2 max-h-48 overflow-y-auto">
+        <div className="mt-4 space-y-2 max-h-48 ">
           {newSumarry.map((chat, index) => (
             <div key={index} className=" whitespace-pre-line bg-gray-100 p-3 rounded-md shadow-sm">{chat}</div>
           ))}
